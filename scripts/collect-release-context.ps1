@@ -28,7 +28,14 @@ function Invoke-Git {
 function Try-Git {
   param([string[]]$GitArgs)
 
-  $output = & git @GitArgs 2>$null
+  $previousErrorActionPreference = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    $output = & git @GitArgs 2>$null
+  } finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+  }
+
   if ($LASTEXITCODE -ne 0) {
     return $null
   }
@@ -61,7 +68,7 @@ function First-Line {
     return $null
   }
 
-  $lines = $Text -split "`r?`n" | Where-Object { $_ }
+  $lines = @($Text -split "`r?`n" | Where-Object { $_ })
   if ($lines.Count -eq 0) {
     return $null
   }
@@ -70,6 +77,7 @@ function First-Line {
 }
 
 $repoRoot = Invoke-Git @("rev-parse", "--show-toplevel")
+$originUrl = Try-Git @("remote", "get-url", "origin")
 $targetRef = if ($Tag) { $Tag } else { $Target }
 $targetCommit = Resolve-Commitish $targetRef
 if (-not $targetCommit) {
@@ -118,11 +126,16 @@ $releaseExists = "not checked"
 $releaseUrl = ""
 if ($Tag) {
   $ghCommand = Get-Command gh -ErrorAction SilentlyContinue
-  if ($ghCommand) {
-    $releaseJson = & gh release view $Tag --json url 2>$null
-    if ($LASTEXITCODE -eq 0 -and $releaseJson) {
+  if (-not $originUrl) {
+    $releaseExists = "no remote"
+  } elseif ($ghCommand) {
+    & gh release view $Tag *> $null
+    if ($LASTEXITCODE -eq 0) {
       $releaseExists = "true"
-      $releaseUrl = (ConvertFrom-Json $releaseJson).url
+      $releaseJson = & gh release view $Tag --json url 2>$null
+      if ($LASTEXITCODE -eq 0 -and $releaseJson) {
+        $releaseUrl = (ConvertFrom-Json $releaseJson).url
+      }
     } else {
       $releaseExists = "false"
     }
@@ -132,6 +145,9 @@ if ($Tag) {
 }
 
 Write-Output "[release-context] repo: $repoRoot"
+if ($originUrl) {
+  Write-Output "[release-context] origin: $originUrl"
+}
 Write-Output "[release-context] target: $targetRef ($targetCommit)"
 if ($BaseTag) {
   Write-Output "[release-context] base tag: $BaseTag"
