@@ -79,6 +79,7 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 | [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) | Collects tags, commit range, changed files, diff stats, and ordered commit history |
 | [`references/release-note-checklist.md`](./references/release-note-checklist.md) | Review checklist for large or messy releases |
 | [`references/release-note-outline.md`](./references/release-note-outline.md) | Reusable drafting outline for release-note structure |
+| [`references/release-note-template.md`](./references/release-note-template.md) | Fill-in template for turning diff evidence into a release body |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Maintenance and QA guidance for future updates |
 
 ## Recommended Release Workflow

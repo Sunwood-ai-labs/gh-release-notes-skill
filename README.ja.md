@@ -79,6 +79,7 @@ GitHub Release Notes Skill は、リポジトリの実データをそのまま r
 | [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) | タグ、比較範囲、変更ファイル、差分統計、コミット履歴を収集 |
 | [`references/release-note-checklist.md`](./references/release-note-checklist.md) | 大きいリリースや履歴が荒いケース向けの確認リスト |
 | [`references/release-note-outline.md`](./references/release-note-outline.md) | release notes の下書き構成テンプレート |
+| [`references/release-note-template.md`](./references/release-note-template.md) | 差分の根拠をそのまま release body に落とし込むための記入式テンプレート |
 | [`CONTRIBUTING.ja.md`](./CONTRIBUTING.ja.md) | 今後の更新時に守る QA と運用ルール |
 
 ## 推奨ワークフロー

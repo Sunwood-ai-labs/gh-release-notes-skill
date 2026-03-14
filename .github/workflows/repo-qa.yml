@@ -1,0 +1,18 @@
+name: Repo QA
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify repository surfaces
+        shell: pwsh
+        run: ./scripts/verify-repo-surfaces.ps1
