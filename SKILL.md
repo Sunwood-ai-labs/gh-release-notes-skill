@@ -15,6 +15,7 @@ Use this skill to:
 - rewrite thin or inaccurate existing GitHub release bodies
 - create or update GitHub releases with `gh release create` or `gh release edit`
 - handle first releases where there is no previous tag
+- mirror release notes into repository docs when the user wants docs-backed or bilingual release pages
 - keep release notes grounded in actual shipped behavior
 
 ## Prerequisites
@@ -47,11 +48,17 @@ Use this skill to:
    - Group notes by user-visible capabilities and implementation areas, not by raw commit count.
    - Mention validation only if you actually ran it.
    - Use [references/release-note-template.md](./references/release-note-template.md) when you want a drafting scaffold.
-6. Publish or update the release with `gh`.
+6. When the user wants docs-backed release notes, inspect the repository docs surface before publishing.
+   - Reuse the existing docs framework, locale structure, and navigation style instead of inventing a parallel format.
+   - Create or update the matching docs page in every language the user requested.
+   - If the GitHub release body should link into docs, publish the docs changes first so the final release body can point at live URLs.
+   - Prefer badge-style links at the top of the GitHub release body when the user explicitly wants docs navigation from the release note.
+7. Publish or update the release with `gh`.
    - Use `gh release create <tag> --title ... --notes-file ...` when the release does not exist.
    - Use `gh release edit <tag> --notes-file ...` when the release already exists or needs a rewrite.
-7. Verify the published body.
+8. Verify the published body.
    - Run `gh release view <tag> --json url,title,body` and confirm the text matches what you intended.
+   - If you created docs pages, verify those URLs resolve and that the release body points at the published docs routes.
 
 ## Evidence Standard
 
@@ -82,6 +89,8 @@ For detailed drafting rules and anti-patterns, read [references/release-note-che
 - For initial releases, say explicitly that the notes cover the full history shipped in that tag.
 - When a script adds real behavior, name the behavior, not just the filename.
 - When a workflow or fixture materially protects the release, explain what it validates.
+- When docs-backed release notes are requested, keep the GitHub release body readable on its own and use badges or short links to point at the fuller docs pages.
+- Mirror the release note into repository docs only when the user asks for it or when the release is clearly supposed to become part of the published docs surface.
 - Keep the final note dense with evidence but still readable.
 
 ## Windows Notes File Handling
@@ -105,6 +114,7 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 - If you did not run validation in the target repository, say so clearly.
 - If there is no previous tag, verify that the drafted scope really covers the full shipped history.
 - If the release already existed, confirm the final published body matches the rewritten note.
+- If you created docs-backed release notes, confirm the docs build or deployment path succeeded before you call the work done.
 
 ## Publishing With gh
 

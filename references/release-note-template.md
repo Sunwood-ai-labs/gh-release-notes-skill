@@ -7,6 +7,12 @@ Use this outline after reading the actual diff. Replace the placeholders with re
 - State the target tag and comparison range.
 - Say explicitly when the release is an initial release with no previous tag.
 
+## Optional Docs Mirror
+
+- If the user wants docs-backed release notes, add links or badges near the top of the GitHub release body that point to the published docs page.
+- Mirror the release note into the repository docs in each requested language.
+- Publish docs before the final `gh release edit` when the release body should point at live docs URLs.
+
 ## Highlights
 
 - Describe the most important shipped behavior first.

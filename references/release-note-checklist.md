@@ -11,6 +11,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Determine the previous tag.
 - If no previous tag exists, treat the release as an initial release and say so in the notes.
 - Decide the note language and whether publication is expected in the current task.
+- Decide whether the release note also needs to live in the repository docs, and in which languages.
 
 ## 2. Collect evidence
 
@@ -20,6 +21,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Inspect the actual patches for major commits and changed files with `git show`.
 - Prioritize scripts, workflows, fixtures, public docs, and visible assets.
 - Keep a short evidence list so each release-note claim can be tied back to a file or diff.
+- If docs-backed release notes are requested, inspect the docs framework, locale structure, and deployment path before drafting links.
 
 ## 3. Translate the diff into capabilities
 
@@ -43,6 +45,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Use `gh release edit` for existing releases or rewrites.
 - Write temporary note files as UTF-8 without BOM on Windows.
 - Verify with `gh release view <tag> --json url,title,body`.
+- If you added docs pages, publish those changes first and confirm the docs URLs resolve before finalizing badge links in the GitHub release body.
 
 ## Anti-patterns
 
@@ -52,3 +55,4 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Leading with README polish when substantive code or tooling changed
 - Claiming tests passed without running them
 - Publishing a note without checking the final rendered body
+- Pointing GitHub release badges at docs URLs that are not live yet
