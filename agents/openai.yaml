@@ -1,4 +1,4 @@
 interface:
   display_name: "GitHub Release Notes"
-  short_description: "Draft evidence-based GitHub release notes from real diffs and optionally mirror them into docs."
-  default_prompt: "Use $gh-release-notes to inspect the real diff for this tag, draft evidence-based release notes, optionally mirror them into repository docs, and publish or update the GitHub release with gh."
+  short_description: "Draft evidence-based GitHub release notes from real diffs and mirror them into docs by default."
+  default_prompt: "Use $gh-release-notes to inspect the real diff for this tag, draft evidence-based release notes, mirror them into repository docs by default when a docs surface exists, and publish or update the GitHub release with gh."

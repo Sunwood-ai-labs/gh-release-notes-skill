@@ -26,7 +26,7 @@ GitHub Release Notes Skill は、リポジトリの実データをそのまま r
 - `git log --oneline` だけに頼らず、実際の差分から release notes を組み立てる
 - 初回リリースと通常のタグリリースを同じ流れで扱う
 - `gh release create` / `gh release edit` と公開後確認まで一貫して進める
-- リポジトリに docs サイトがある場合や、英日ページ付き release notes が求められる場合にも対応できる
+- 対象リポジトリに docs サイトがある場合は、release notes を docs 側にも既定で反映できる
 - 英日 README と軽量 QA を含む公開向け skill リポジトリとしてそのまま共有できる
 
 ## クイックスタート
@@ -65,7 +65,7 @@ GitHub Release Notes Skill は、リポジトリの実データをそのまま r
    gh release view v0.1.0 --json url,body
    ```
 
-6. docs 側にも載せる必要がある場合は、先に docs を更新・公開して、badge リンクの URL が生きてから GitHub release を最終更新します。
+6. 対象リポジトリに docs がある場合は、先に docs を更新・公開して、badge リンクの URL が生きてから GitHub release を最終更新します。
 
 7. Codex から skill を呼び出します。
 
@@ -92,7 +92,7 @@ GitHub Release Notes Skill は、リポジトリの実データをそのまま r
 3. [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) で比較範囲を特定します。
 4. 変更されたスクリプト、ワークフロー、ドキュメント、パッケージ設定、ユーザー向け資産の実差分を読みます。
 5. ファイル名の列挙ではなく、実際の振る舞いとリリース範囲で文章を組み立てます。
-6. docs 併記が必要な場合は、既存の docs フレームワークとロケール構成に合わせてページを追加します。
+6. docs 面がすでにあるリポジトリでは、それを既定フローとして既存の docs フレームワークとロケール構成に合わせてページを追加します。
 7. `gh release create` または `gh release edit` で公開します。
 8. `gh release view <tag> --json url,body` で公開文面を検証し、docs URL も実際に開けるか確認します。
 

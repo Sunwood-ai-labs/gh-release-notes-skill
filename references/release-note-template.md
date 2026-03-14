@@ -7,11 +7,12 @@ Use this outline after reading the actual diff. Replace the placeholders with re
 - State the target tag and comparison range.
 - Say explicitly when the release is an initial release with no previous tag.
 
-## Optional Docs Mirror
+## Default Docs Mirror
 
-- If the user wants docs-backed release notes, add links or badges near the top of the GitHub release body that point to the published docs page.
-- Mirror the release note into the repository docs in each requested language.
+- When the repository already has a docs surface, add links or badges near the top of the GitHub release body that point to the published docs page.
+- Mirror the release note into the repository docs in each already-supported language unless the user explicitly narrows the scope.
 - Publish docs before the final `gh release edit` when the release body should point at live docs URLs.
+- If the repository does not have a docs publishing surface, skip this section instead of inventing a new docs system just for the release note.
 
 ## Highlights
 

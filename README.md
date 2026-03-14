@@ -26,7 +26,7 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 - Build release notes from real code changes, not `git log --oneline` alone.
 - Handle both first releases and incremental tagged releases with the same workflow.
 - Keep publication grounded in `gh release create`, `gh release edit`, and post-publish verification.
-- Support docs-backed release notes when the repository already publishes a docs site or the user wants bilingual release pages.
+- Mirror release notes into repository docs by default when the target repository already publishes a docs site.
 - Ship the skill with bilingual top-level docs and lightweight QA so the repository is ready to share.
 
 ## Quick Start
@@ -65,7 +65,7 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
    gh release view v0.1.0 --json url,body
    ```
 
-6. If the release note should also live in published docs, update the docs pages first and then edit the GitHub release so any badge links point at live docs URLs.
+6. If the target repository already publishes docs, update those docs pages first and then edit the GitHub release so badge links point at live docs URLs.
 
 7. Trigger the skill from Codex:
 
@@ -92,7 +92,7 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 3. Run [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) to determine the comparison range.
 4. Review the actual diffs for changed scripts, workflows, docs, packaging files, and user-facing assets.
 5. Draft notes around behavior and release scope, not raw filenames.
-6. If docs-backed release notes are requested, reuse the repository's docs framework and locale structure instead of inventing a parallel format.
+6. Reuse the repository's docs framework and locale structure by default when a docs surface already exists.
 7. Publish with `gh release create` or `gh release edit`.
 8. Verify the published body with `gh release view <tag> --json url,body`, and verify docs URLs too when you created them.
 

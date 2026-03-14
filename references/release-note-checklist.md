@@ -11,7 +11,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Determine the previous tag.
 - If no previous tag exists, treat the release as an initial release and say so in the notes.
 - Decide the note language and whether publication is expected in the current task.
-- Decide whether the release note also needs to live in the repository docs, and in which languages.
+- Assume the release note should also live in the repository docs when a docs surface exists, and identify which languages the docs already support.
 
 ## 2. Collect evidence
 
@@ -21,7 +21,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Inspect the actual patches for major commits and changed files with `git show`.
 - Prioritize scripts, workflows, fixtures, public docs, and visible assets.
 - Keep a short evidence list so each release-note claim can be tied back to a file or diff.
-- If docs-backed release notes are requested, inspect the docs framework, locale structure, and deployment path before drafting links.
+- Inspect the docs framework, locale structure, and deployment path before drafting links whenever the repository already has a docs surface.
 
 ## 3. Translate the diff into capabilities
 
