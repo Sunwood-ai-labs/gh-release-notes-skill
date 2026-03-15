@@ -1,6 +1,6 @@
 ---
 name: gh-release-notes
-description: Draft and publish GitHub release notes from actual git diffs and tags using gh. Use when Codex needs to create, revise, or verify release notes for a GitHub release, especially when the notes must be based on real code changes, commit ranges, touched files, validation results, or a first release with no previous tag. By default, mirror the release note into repository docs too when the target repository already has a docs surface, unless the user explicitly asks not to.
+description: Draft and publish GitHub release notes from actual git diffs and tags using gh, or turn the same release evidence into docs-backed article pages. Use when Codex needs to create, revise, or verify release notes for a GitHub release, especially when the notes must be based on real code changes, commit ranges, touched files, validation results, or a first release with no previous tag. Also use it when the user wants release articles written from GitHub release material or repository changes. When the target repository already has a docs surface, create the article in docs by default and mirror release notes into docs too unless the user explicitly asks not to.
 ---
 
 # GitHub Release Notes
@@ -15,6 +15,7 @@ Use this skill to:
 - rewrite thin or inaccurate existing GitHub release bodies
 - create or update GitHub releases with `gh release create` or `gh release edit`
 - handle first releases where there is no previous tag
+- draft docs-backed article pages from the same release evidence when the user wants a blog or announcement post
 - mirror release notes into repository docs by default when the target repository already publishes docs
 - keep release notes grounded in actual shipped behavior
 
@@ -43,21 +44,32 @@ Use this skill to:
    - Read the changed file list and diff stats first.
    - Always inspect new or heavily changed scripts, workflows, fixtures, docs, and user-facing assets.
    - Use `git show` on major commits and touched files until you can name concrete capabilities added.
-5. Draft the notes in the user's requested language.
+5. Draft the requested output in the user's requested language.
    - Open with release scope and whether it is an initial release.
-   - Group notes by user-visible capabilities and implementation areas, not by raw commit count.
+   - Group the material by user-visible capabilities and implementation areas, not by raw commit count.
    - Mention validation only if you actually ran it.
-   - Use [references/release-note-template.md](./references/release-note-template.md) when you want a drafting scaffold.
-6. Inspect the repository docs surface before publishing and treat docs-backed release notes as the default path.
+   - Use [references/release-note-template.md](./references/release-note-template.md) when you want a release-note scaffold.
+   - If the user wants GitHub release notes, draft a publishable release body.
+   - If the user wants article output, draft docs-backed article pages instead of a detached local draft whenever the repository has a docs surface.
+   - Do not stop at "I will draft the article next" when the user already asked for article output. Create the article pages in the same task unless the user explicitly paused the work.
+6. If you are drafting article output, inspect the repository docs surface and place the article in docs by default.
+   - When the repository already has bilingual English and Japanese docs, create both `docs/guide/articles/<slug>.md` and `docs/ja/guide/articles/<slug>.md`.
+   - When the repository has only one docs locale, use the matching existing docs structure.
+   - Keep the body free of Zenn or Qiita frontmatter.
+   - Use a structure such as short introduction, key points, main features, workflow impact, validation, and links.
+   - Reuse public screenshots, animated assets, and docs links when they help readers understand the release.
+   - Update article index pages such as `docs/guide/articles.md` and `docs/ja/guide/articles.md` when they already exist.
+   - Add a related article link from release summary pages when the docs structure already has release pages.
+7. Inspect the repository docs surface before publishing and treat docs-backed release notes and docs-backed articles as the default path.
    - Reuse the existing docs framework, locale structure, and navigation style instead of inventing a parallel format.
    - Create or update the matching docs page in every language already supported by the repository, unless the user narrowed the request.
    - If the GitHub release body should link into docs, publish the docs changes first so the final release body can point at live URLs.
    - Prefer badge-style links at the top of the GitHub release body so readers can jump to the docs pages.
    - Skip the docs mirror only when the repository clearly has no docs publishing surface or the user explicitly asks you not to add docs pages.
-7. Publish or update the release with `gh`.
+8. Publish or update the release with `gh` when GitHub publication is part of the task.
    - Use `gh release create <tag> --title ... --notes-file ...` when the release does not exist.
    - Use `gh release edit <tag> --notes-file ...` when the release already exists or needs a rewrite.
-8. Verify the published body.
+9. Verify the published body when you published or edited the GitHub release.
    - Run `gh release view <tag> --json url,title,body` and confirm the text matches what you intended.
    - If you created docs pages, verify those URLs resolve and that the release body points at the published docs routes.
 
@@ -69,6 +81,7 @@ Use this skill to:
 - Do not claim support for a feature unless you can point to the file or diff that introduced it.
 - Do not claim checks passed unless you ran them in the current repo.
 - If the earlier note is thin, deepen it by reading the code diffs and rewriting the release body.
+- Do not turn a docs article into vague marketing copy detached from the diff evidence.
 
 ## Inspection Priorities
 
@@ -94,6 +107,18 @@ For detailed drafting rules and anti-patterns, read [references/release-note-che
 - Treat docs-backed release notes as the standard outcome whenever the repository already has a published docs surface.
 - Keep the final note dense with evidence but still readable.
 
+## Docs Article Mode
+
+When the user wants article output instead of, or in addition to, a GitHub release body:
+
+- write natural prose, not translated commit history
+- explain reader impact before internal implementation detail
+- create docs article pages in the repository instead of saving a detached draft elsewhere
+- finish the docs article pages in the same turn instead of leaving a follow-up promise
+- when the docs site already supports both English and Japanese, write both locale pages
+- include a final title, stable lead paragraph, main sections, and explicit links
+- treat the docs article as the canonical source that can later be handed to `oasis-skill` for Zenn and Qiita distribution
+
 ## Windows Notes File Handling
 
 When you need a temporary notes file on Windows, write UTF-8 without BOM before calling `gh`:
@@ -116,6 +141,7 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 - If there is no previous tag, verify that the drafted scope really covers the full shipped history.
 - If the release already existed, confirm the final published body matches the rewritten note.
 - If you created docs-backed release notes, confirm the docs build or deployment path succeeded before you call the work done.
+- If you drafted only docs article pages and did not publish a GitHub release, say that clearly and report the saved docs paths.
 
 ## Publishing With gh
 
