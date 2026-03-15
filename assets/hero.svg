@@ -27,15 +27,20 @@
   <rect x="210" y="438" width="198" height="20" rx="10" fill="#17324D"/>
   <circle cx="182" cy="496" r="14" fill="#0F9D8D"/>
   <rect x="210" y="486" width="156" height="20" rx="10" fill="#17324D"/>
-  <path d="M624 338L788 244C802.095 235.915 819.294 235.021 834.16 241.592L1058.21 340.628C1074.93 348.014 1085.2 365.095 1083.81 383.315L1072.26 534.737C1071.08 550.278 1061.72 564.029 1047.72 571.267L883.475 656.138C868.764 663.739 850.968 663.044 836.894 654.32L676.237 554.693C661.179 545.356 652.995 528.134 655.196 510.522L676.589 339.405C678.121 327.145 685.402 316.343 696.547 310.033L624 338Z" fill="#0F9D8D" opacity="0.16"/>
-  <path d="M698 288L860 196C872.529 188.884 887.835 188.194 900.96 194.136L1088.79 279.144C1103.11 285.63 1112 299.815 1111 315.477L1099.6 493.858C1098.74 507.269 1090.73 519.233 1078.46 525.639L916.328 610.258C903.368 617.021 887.903 616.467 875.461 608.79L710.405 506.916C697.61 499.02 690.684 484.382 692.595 469.499L710.243 332.096C711.645 321.179 718.042 311.541 727.974 305.775L698 288Z" fill="#0F9D8D"/>
-  <path d="M788 336L906 272L1020 324V420L902 484L788 432V336Z" fill="#E8FFFB" stroke="#17324D" stroke-width="12" stroke-linejoin="round"/>
-  <path d="M906 272V484" stroke="#17324D" stroke-width="12" stroke-linecap="round"/>
-  <path d="M788 336L906 392L1020 324" stroke="#17324D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="matrix(0.8 0 0 0.8 390 150)">
+    <path d="M624 338L788 244C802.095 235.915 819.294 235.021 834.16 241.592L1058.21 340.628C1074.93 348.014 1085.2 365.095 1083.81 383.315L1072.26 534.737C1071.08 550.278 1061.72 564.029 1047.72 571.267L883.475 656.138C868.764 663.739 850.968 663.044 836.894 654.32L676.237 554.693C661.179 545.356 652.995 528.134 655.196 510.522L676.589 339.405C678.121 327.145 685.402 316.343 696.547 310.033L624 338Z" fill="#0F9D8D" opacity="0.16"/>
+    <path d="M698 288L860 196C872.529 188.884 887.835 188.194 900.96 194.136L1088.79 279.144C1103.11 285.63 1112 299.815 1111 315.477L1099.6 493.858C1098.74 507.269 1090.73 519.233 1078.46 525.639L916.328 610.258C903.368 617.021 887.903 616.467 875.461 608.79L710.405 506.916C697.61 499.02 690.684 484.382 692.595 469.499L710.243 332.096C711.645 321.179 718.042 311.541 727.974 305.775L698 288Z" fill="#0F9D8D"/>
+    <path d="M788 336L906 272L1020 324V420L902 484L788 432V336Z" fill="#E8FFFB" stroke="#17324D" stroke-width="12" stroke-linejoin="round"/>
+    <path d="M906 272V484" stroke="#17324D" stroke-width="12" stroke-linecap="round"/>
+    <path d="M788 336L906 392L1020 324" stroke="#17324D" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
   <path d="M696 120H1132" stroke="#17324D" stroke-width="12" stroke-linecap="round"/>
   <path d="M696 160H1044" stroke="#4C7CBF" stroke-width="12" stroke-linecap="round"/>
-  <text x="696" y="236" fill="#17324D" font-family="Segoe UI, Arial, sans-serif" font-size="56" font-weight="700">Evidence-based</text>
-  <text x="696" y="304" fill="#17324D" font-family="Segoe UI, Arial, sans-serif" font-size="56" font-weight="700">GitHub Release Notes</text>
-  <text x="696" y="382" fill="#4C5F7B" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="500">Inspect tags, diff the real implementation, and publish</text>
-  <text x="696" y="422" fill="#4C5F7B" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="500">release bodies that reflect what actually shipped.</text>
+  <rect x="696" y="192" width="120" height="36" rx="18" fill="#DCE6F7"/>
+  <text x="726" y="216" fill="#17324D" font-family="Segoe UI, Arial, sans-serif" font-size="20" font-weight="700">GitHub</text>
+  <text x="696" y="288" fill="#17324D" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="700">Evidence-based</text>
+  <text x="696" y="348" fill="#17324D" font-family="Segoe UI, Arial, sans-serif" font-size="52" font-weight="700">Release Notes</text>
+  <text x="696" y="404" fill="#4C5F7B" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="500">Inspect tags and diff the</text>
+  <text x="696" y="438" fill="#4C5F7B" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="500">real implementation before</text>
+  <text x="696" y="472" fill="#4C5F7B" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="500">you publish release notes.</text>
 </svg>
