@@ -26,6 +26,7 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 - Build release notes from real code changes, not `git log --oneline` alone.
 - Handle both first releases and incremental tagged releases with the same workflow.
 - Reuse the same release evidence to draft docs article pages when the user wants a blog or announcement post.
+- Reuse an existing versioned release header SVG when the target repository already has one.
 - Keep publication grounded in `gh release create`, `gh release edit`, and post-publish verification.
 - Mirror release notes into repository docs by default when the target repository already publishes a docs site.
 - Ship the skill with bilingual top-level docs and lightweight QA so the repository is ready to share.
@@ -74,9 +75,11 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 
 7. If the user asked for article output instead of only release notes, create the article pages in the repository docs during the same task, for example `docs/guide/articles/<slug>.md` and `docs/ja/guide/articles/<slug>.md` when the docs site already supports both locales.
 
-8. If the target repository already publishes docs, update those docs pages first and then edit the GitHub release so badge links point at live docs URLs.
+8. If the target repository already has a versioned header SVG such as `assets/release-header-v0.2.0.svg`, derive a new header for the target version, publish it where docs can serve it, and place it near the top of the GitHub release body plus the related docs pages.
 
-9. Trigger the skill from Codex:
+9. If the target repository already publishes docs, update those docs pages first and then edit the GitHub release so badge links point at live docs URLs.
+
+10. Trigger the skill from Codex:
 
    ```text
    Use $gh-release-notes to draft or update GitHub release notes from the actual code diff for this tag, or turn that same evidence into docs article pages.
@@ -101,9 +104,9 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 3. Run [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) to determine the comparison range.
 4. Review the actual diffs for changed scripts, workflows, docs, packaging files, and user-facing assets.
 5. Draft notes around behavior and release scope, not raw filenames.
-6. Reuse the repository's docs framework and locale structure by default when a docs surface already exists.
+6. Reuse the repository's docs framework, locale structure, and any existing release header SVG pattern when a docs surface already exists.
 7. Publish with `gh release create` or `gh release edit`.
-8. Verify the published body with `gh release view <tag> --json url,body`, and verify docs URLs too when you created them.
+8. Verify the published body with `gh release view <tag> --json url,body`, and verify docs URLs and header-image URLs too when you created them.
 
 ## Local QA
 

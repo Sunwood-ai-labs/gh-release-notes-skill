@@ -16,6 +16,7 @@ Use this skill to:
 - create or update GitHub releases with `gh release create` or `gh release edit`
 - handle first releases where there is no previous tag
 - draft docs-backed article pages from the same release evidence when the user wants a blog or announcement post
+- derive a new versioned release header SVG when the repository already has an earlier release header asset
 - mirror release notes into repository docs by default when the target repository already publishes docs
 - keep release notes grounded in actual shipped behavior
 
@@ -43,6 +44,7 @@ Use this skill to:
 4. Review implementation diffs, not just summaries.
    - Read the changed file list and diff stats first.
    - Always inspect new or heavily changed scripts, workflows, fixtures, docs, and user-facing assets.
+   - Search for existing release header assets such as `assets/release-header-v0.2.0.svg`, `docs/public/.../release-header-v0.2.0.svg`, or similar versioned SVGs before deciding whether to create a new header image.
    - Use `git show` on major commits and touched files until you can name concrete capabilities added.
 5. Draft the requested output in the user's requested language.
    - Open with release scope and whether it is an initial release.
@@ -60,18 +62,26 @@ Use this skill to:
    - Reuse public screenshots, animated assets, and docs links when they help readers understand the release.
    - Update article index pages such as `docs/guide/articles.md` and `docs/ja/guide/articles.md` when they already exist.
    - Add a related article link from release summary pages when the docs structure already has release pages.
-7. Inspect the repository docs surface before publishing and treat docs-backed release notes and docs-backed articles as the default path.
+7. If the repository already has versioned release header SVG assets, create a new header image for the target version and reuse it everywhere the release appears.
+   - Use the nearest existing asset, such as `assets/release-header-v0.2.0.svg`, as the visual base instead of inventing a totally new style.
+   - Update the version text and adjust the header copy or visual emphasis to match the current release scope.
+   - Save the new asset using the repository's established naming and folder pattern.
+   - When the seed asset is outside the published docs asset surface, also create or mirror a published copy so docs pages and GitHub releases can reference it.
+   - Place the header image near the top of the GitHub release body, the docs release page, and any docs article page created for the same release.
+   - In the GitHub release body, use a published URL such as the docs site URL or a raw GitHub asset URL rather than a local relative path.
+8. Inspect the repository docs surface before publishing and treat docs-backed release notes and docs-backed articles as the default path.
    - Reuse the existing docs framework, locale structure, and navigation style instead of inventing a parallel format.
    - Create or update the matching docs page in every language already supported by the repository, unless the user narrowed the request.
    - If the GitHub release body should link into docs, publish the docs changes first so the final release body can point at live URLs.
    - Prefer badge-style links at the top of the GitHub release body so readers can jump to the docs pages.
    - Skip the docs mirror only when the repository clearly has no docs publishing surface or the user explicitly asks you not to add docs pages.
-8. Publish or update the release with `gh` when GitHub publication is part of the task.
+9. Publish or update the release with `gh` when GitHub publication is part of the task.
    - Use `gh release create <tag> --title ... --notes-file ...` when the release does not exist.
    - Use `gh release edit <tag> --notes-file ...` when the release already exists or needs a rewrite.
-9. Verify the published body when you published or edited the GitHub release.
+10. Verify the published body when you published or edited the GitHub release.
    - Run `gh release view <tag> --json url,title,body` and confirm the text matches what you intended.
    - If you created docs pages, verify those URLs resolve and that the release body points at the published docs routes.
+   - If you added a release header image, verify that the image URL resolves and renders from the GitHub release body and the docs pages.
 
 ## Evidence Standard
 
@@ -91,6 +101,7 @@ Inspect these categories whenever they appear in the diff:
 - CI or automation under `.github/workflows/`
 - fixtures, test data, or regression helpers
 - README, `SKILL.md`, docs, references, or public assets
+- versioned release header assets such as `release-header-v*.svg`
 - packaging or version metadata such as `package.json`, `pyproject.toml`, or release config
 
 For detailed drafting rules and anti-patterns, read [references/release-note-checklist.md](./references/release-note-checklist.md).
@@ -105,6 +116,7 @@ For detailed drafting rules and anti-patterns, read [references/release-note-che
 - When a workflow or fixture materially protects the release, explain what it validates.
 - Keep the GitHub release body readable on its own and use badges or short links to point at the fuller docs pages.
 - Treat docs-backed release notes as the standard outcome whenever the repository already has a published docs surface.
+- When a versioned release header SVG already exists in the repository, create and include the updated header instead of leaving the release without a hero image.
 - Keep the final note dense with evidence but still readable.
 
 ## Docs Article Mode
@@ -116,6 +128,7 @@ When the user wants article output instead of, or in addition to, a GitHub relea
 - create docs article pages in the repository instead of saving a detached draft elsewhere
 - finish the docs article pages in the same turn instead of leaving a follow-up promise
 - when the docs site already supports both English and Japanese, write both locale pages
+- place the release header image near the top when a versioned header SVG exists or can be derived from an earlier version
 - include a final title, stable lead paragraph, main sections, and explicit links
 - treat the docs article as the canonical source that can later be handed to `oasis-skill` for Zenn and Qiita distribution
 
@@ -141,6 +154,7 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 - If there is no previous tag, verify that the drafted scope really covers the full shipped history.
 - If the release already existed, confirm the final published body matches the rewritten note.
 - If you created docs-backed release notes, confirm the docs build or deployment path succeeded before you call the work done.
+- If you created a release header image, report where the SVG was saved and where it is referenced.
 - If you drafted only docs article pages and did not publish a GitHub release, say that clearly and report the saved docs paths.
 
 ## Publishing With gh

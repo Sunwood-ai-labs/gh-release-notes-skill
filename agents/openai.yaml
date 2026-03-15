@@ -1,4 +1,4 @@
 interface:
   display_name: "GitHub Release Notes"
-  short_description: "Draft diff-backed GitHub release notes or docs-backed article pages."
-  default_prompt: "Use $gh-release-notes to inspect the real diff for this tag, draft evidence-based GitHub release notes or docs article pages, create docs article pages in the same task when article output is requested, mirror release notes into repository docs by default when a docs surface exists, and publish or update the GitHub release with gh when requested."
+  short_description: "Draft diff-backed release notes, docs articles, and reuse versioned release header SVGs."
+  default_prompt: "Use $gh-release-notes to inspect the real diff for this tag, draft evidence-based GitHub release notes or docs article pages, create docs article pages in the same task when article output is requested, reuse and update an existing versioned release header SVG when the repository already has one, mirror release notes into repository docs by default when a docs surface exists, and publish or update the GitHub release with gh when requested."

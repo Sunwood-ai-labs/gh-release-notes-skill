@@ -12,6 +12,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - If no previous tag exists, treat the release as an initial release and say so in the notes.
 - Decide the note language and whether publication is expected in the current task.
 - Assume the release note should also live in the repository docs when a docs surface exists, and identify which languages the docs already support.
+- Check whether the repository already has a versioned release header SVG that should be updated for this release.
 
 ## 2. Collect evidence
 
@@ -20,6 +21,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Read `git log --reverse --stat` for sequence and grouping.
 - Inspect the actual patches for major commits and changed files with `git show`.
 - Prioritize scripts, workflows, fixtures, public docs, and visible assets.
+- Inspect any existing `release-header-v*.svg` assets so you can reuse the established visual language when needed.
 - Keep a short evidence list so each release-note claim can be tied back to a file or diff.
 - Inspect the docs framework, locale structure, and deployment path before drafting links whenever the repository already has a docs surface.
 
@@ -28,6 +30,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Translate file diffs into capabilities.
 - Name concrete behavior such as supported flags, new detection rules, validation steps, or install flows.
 - Mention docs and visual assets after core functionality unless the release is docs-only.
+- If the repository already ships release header art, carry that forward into the new release instead of silently dropping the visual header.
 - If a script or workflow materially protects quality, explain what it checks.
 - If you cannot explain why a change matters to a release reader, inspect the patch again before drafting.
 
@@ -46,6 +49,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Write temporary note files as UTF-8 without BOM on Windows.
 - Verify with `gh release view <tag> --json url,title,body`.
 - If you added docs pages, publish those changes first and confirm the docs URLs resolve before finalizing badge links in the GitHub release body.
+- If you added a release header image, confirm the image URL resolves from the GitHub release body and that the docs pages render it.
 
 ## Anti-patterns
 
@@ -56,3 +60,4 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Claiming tests passed without running them
 - Publishing a note without checking the final rendered body
 - Pointing GitHub release badges at docs URLs that are not live yet
+- Forgetting to carry forward an existing versioned release header asset pattern when the repository already uses one

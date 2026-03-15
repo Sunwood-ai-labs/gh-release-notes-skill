@@ -26,6 +26,7 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 - `git log --oneline` だけに頼らず、実 diff から release notes を作る
 - 初回リリースと継続リリースの両方を同じ流れで扱う
 - 同じ release evidence から、docs 記事ページも作る
+- 既存の version 付き release header SVG がある repo では、それを流用して新しいヘッダー画像も作る
 - `gh release create` / `gh release edit` と公開確認までつなげる
 - docs サイトがある repo では、release notes を docs にも反映する
 - 日英 README と軽量 QA を備えた共有しやすい skill repo として保つ
@@ -74,7 +75,9 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 
 7. 記事出力を作る場合は、その場で repo の docs を正本として `docs/guide/articles/<slug>.md` と `docs/ja/guide/articles/<slug>.md` のような記事ページまで作り、Zenn / Qiita 反映は別の配信用 skill に渡します。
 
-8. docs を持つ repo では、release body から参照する docs URL が live になっていることも確認します。
+8. `assets/release-header-v0.2.0.svg` のような version 付き release header SVG が repo にある場合は、それを元に対象 version 用のヘッダー画像を作り、GitHub release body と関連する docs ページの先頭に載せます。
+
+9. docs を持つ repo では、release body から参照する docs URL が live になっていることも確認します。
 
 ## 同梱ファイル
 
@@ -95,9 +98,9 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 3. `scripts/collect-release-context.ps1` で比較範囲を決める
 4. 重要ファイルや user-facing change を実 diff で読む
 5. 根拠に基づいて GitHub release body または docs 記事ページを draft する
-6. docs surface がある repo では docs 反映も既定路線として扱う
+6. docs surface がある repo では docs 反映と release header SVG の再利用も既定路線として扱う
 7. 必要なら `gh release create` または `gh release edit` で publish する
-8. 公開 body や docs URL を確認する
+8. 公開 body や docs URL、header image URL を確認する
 
 ## ローカル QA
 
@@ -114,6 +117,7 @@ powershell -ExecutionPolicy Bypass -File ./scripts/verify-repo-surfaces.ps1
 - helper script は PowerShell ベースです。ローカル例は `powershell`、GitHub Actions では `pwsh` を想定しています。
 - 一時的な notes file を Windows で作る場合は、`gh release create` / `gh release edit` の前に UTF-8 without BOM で保存してください。
 - 記事ページは docs を正本にし、必要ならそこから Zenn / Qiita へ展開するのが自然です。
+- version 付き release header SVG が repo にある場合は、同じデザイン系列で新 version を作り、release body と docs release/article の両方で再利用するのが自然です。
 
 ## ライセンス
 

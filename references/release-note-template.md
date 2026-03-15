@@ -14,6 +14,13 @@ Use this outline after reading the actual diff. Replace the placeholders with re
 - Publish docs before the final `gh release edit` when the release body should point at live docs URLs.
 - If the repository does not have a docs publishing surface, skip this section instead of inventing a new docs system just for the release note.
 
+## Header Visual
+
+- If the repository already has a versioned release header SVG such as `assets/release-header-v0.2.0.svg`, derive a new one for the target release instead of starting from scratch.
+- Keep the established visual family, but update the version text and any release-specific emphasis.
+- Make sure the final image is available from a published URL for the GitHub release body and from a docs-relative path for docs pages.
+- Place the header image near the top of the GitHub release body, the docs release page, and any related docs article page.
+
 ## Highlights
 
 - Describe the most important shipped behavior first.
