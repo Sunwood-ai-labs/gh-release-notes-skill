@@ -29,6 +29,8 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 - Reuse an existing versioned release header SVG when the target repository already has one.
 - Keep publication grounded in `gh release create`, `gh release edit`, and post-publish verification.
 - Mirror release notes into repository docs by default when the target repository already publishes a docs site.
+- Force a code-backed truth-sync pass so README and primary operator docs do not drift behind release collateral.
+- Leave an auditable release QA inventory artifact and validate it before calling the release task complete.
 - Ship the skill with bilingual top-level docs and lightweight QA so the repository is ready to share.
 
 ## Quick Start
@@ -60,7 +62,7 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
    git show HEAD~1..HEAD
    ```
 
-5. Draft the requested output from the inspected evidence:
+5. Draft the requested output from the inspected evidence and keep each claim scoped to the exact command, service, or surface the code supports:
 
    ```text
    Use $gh-release-notes to inspect the real diff for this tag and draft either the GitHub release body or docs-backed article pages.
@@ -77,9 +79,15 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 
 8. If the target repository already has a versioned header SVG such as `assets/release-header-v0.2.0.svg`, derive a new header for the target version, publish it where docs can serve it, and place it near the top of the GitHub release body plus the related docs pages.
 
-9. If the target repository already publishes docs, update those docs pages first and then edit the GitHub release so badge links point at live docs URLs.
+9. If the target repository already publishes docs, update those docs pages first, run a truth-sync pass across `README` and the primary operator guides, and then edit the GitHub release so badge links point at live docs URLs.
 
-10. Trigger the skill from Codex:
+10. Save a filled release QA inventory file at the standard path `tmp/release-qa-v0.1.0.md` in the target repository from [`references/release-qa-inventory-template.md`](./references/release-qa-inventory-template.md), then validate it as the mandatory pre-close gate:
+
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File D:\Prj\gh-release-notes-skill\scripts\verify-release-qa-inventory.ps1 -RepoPath . -Tag v0.1.0
+   ```
+
+11. Trigger the skill from Codex:
 
    ```text
    Use $gh-release-notes to draft or update GitHub release notes from the actual code diff for this tag, or turn that same evidence into docs article pages.
@@ -92,8 +100,10 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 | [`SKILL.md`](./SKILL.md) | Core Codex skill prompt and release-note workflow |
 | [`agents/openai.yaml`](./agents/openai.yaml) | Metadata for skill discovery surfaces |
 | [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) | Collects tags, commit range, changed files, diff stats, and ordered commit history |
+| [`scripts/verify-release-qa-inventory.ps1`](./scripts/verify-release-qa-inventory.ps1) | Validates the per-release QA inventory artifact before the task is closed |
 | [`references/release-note-checklist.md`](./references/release-note-checklist.md) | Review checklist for large or messy releases |
 | [`references/release-note-outline.md`](./references/release-note-outline.md) | Reusable drafting outline for release-note structure |
+| [`references/release-qa-inventory-template.md`](./references/release-qa-inventory-template.md) | Runtime QA artifact template for claim matrices and truth-sync evidence |
 | [`references/release-note-template.md`](./references/release-note-template.md) | Fill-in template for turning diff evidence into a release body |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Maintenance and QA guidance for future updates |
 
@@ -104,9 +114,12 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 3. Run [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) to determine the comparison range.
 4. Review the actual diffs for changed scripts, workflows, docs, packaging files, and user-facing assets.
 5. Draft notes around behavior and release scope, not raw filenames.
-6. Reuse the repository's docs framework, locale structure, and any existing release header SVG pattern when a docs surface already exists.
-7. Publish with `gh release create` or `gh release edit`.
-8. Verify the published body with `gh release view <tag> --json url,body`, and verify docs URLs and header-image URLs too when you created them.
+6. Inspect the code paths or tests behind implementation-sensitive claims such as routing, retry/backoff, model selection, defaults, environment variables, telemetry surfaces, and path-specific outputs.
+7. Reuse the repository's docs framework, locale structure, and any existing release header SVG pattern when a docs surface already exists.
+8. Treat release notes and walkthrough articles as release collateral, then review `README` plus the primary operator guides to decide which steady-state docs also need updates.
+9. Materialize the release QA inventory at `tmp/release-qa-<tag>.md` in the target repository and validate it with [`scripts/verify-release-qa-inventory.ps1`](./scripts/verify-release-qa-inventory.ps1) by passing the repo path and tag.
+10. Publish with `gh release create` or `gh release edit`.
+11. Verify the published body with `gh release view <tag> --json url,body`, and verify docs URLs, header-image URLs, truth-synced operator docs, and the validated QA inventory artifact too.
 
 ## Local QA
 

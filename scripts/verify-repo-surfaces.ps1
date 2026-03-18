@@ -118,10 +118,17 @@ $requiredFiles = @(
   "agents/openai.yaml",
   "assets/logo.svg",
   "assets/hero.svg",
+  "fixtures/release-gate-fixture/README.md",
+  "fixtures/release-gate-fixture/docs/guide/overview.md",
+  "fixtures/release-gate-fixture/docs/guide/release-notes-v9.9.9.md",
+  "fixtures/release-gate-fixture/docs/guide/whats-new-v9.9.9.md",
+  "fixtures/release-gate-fixture/tmp/release-qa-v9.9.9.md",
   "references/release-note-checklist.md",
   "references/release-note-outline.md",
+  "references/release-qa-inventory-template.md",
   "references/release-note-template.md",
   "scripts/collect-release-context.ps1",
+  "scripts/verify-release-qa-inventory.ps1",
   "scripts/verify-repo-surfaces.ps1"
 )
 
@@ -131,13 +138,20 @@ $markdownFiles = @(
   "CONTRIBUTING.md",
   "CONTRIBUTING.ja.md",
   "SKILL.md",
+  "fixtures/release-gate-fixture/README.md",
+  "fixtures/release-gate-fixture/docs/guide/overview.md",
+  "fixtures/release-gate-fixture/docs/guide/release-notes-v9.9.9.md",
+  "fixtures/release-gate-fixture/docs/guide/whats-new-v9.9.9.md",
+  "fixtures/release-gate-fixture/tmp/release-qa-v9.9.9.md",
   "references/release-note-checklist.md",
   "references/release-note-outline.md",
+  "references/release-qa-inventory-template.md",
   "references/release-note-template.md"
 )
 
 $powerShellFiles = @(
   "scripts/collect-release-context.ps1",
+  "scripts/verify-release-qa-inventory.ps1",
   "scripts/verify-repo-surfaces.ps1"
 )
 
@@ -155,8 +169,9 @@ foreach ($file in $powerShellFiles) {
 
 Test-RequiredText "README.md" @("./README.ja.md", "./SKILL.md", "./CONTRIBUTING.md", "./LICENSE")
 Test-RequiredText "README.ja.md" @("./README.md", "./SKILL.md", "./CONTRIBUTING.ja.md", "./LICENSE")
-Test-RequiredText "SKILL.md" @("./scripts/collect-release-context.ps1", "./references/release-note-checklist.md", "./references/release-note-template.md")
+Test-RequiredText "SKILL.md" @("./scripts/collect-release-context.ps1", "./scripts/verify-release-qa-inventory.ps1", "./references/release-note-checklist.md", "./references/release-qa-inventory-template.md", "./references/release-note-template.md")
 Test-RequiredText "agents/openai.yaml" @("GitHub Release Notes", "gh-release-notes")
+Test-RequiredText ".github/workflows/repo-qa.yml" @("verify-repo-surfaces.ps1", "verify-release-qa-inventory.ps1")
 
 if ($failures.Count -gt 0) {
   foreach ($failure in $failures) {

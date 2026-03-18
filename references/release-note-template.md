@@ -34,6 +34,13 @@ Use this outline after reading the actual diff. Replace the placeholders with re
 
 - Mention README, docs, or public assets after substantive product or tooling changes unless the release is docs-only.
 
+## Steady-State Docs Sync
+
+- List which permanent docs surfaces were reviewed, such as `README`, overview, CLI, setup, deployment, smoke-test, quickstart, or env docs.
+- Mention which of those files changed for truth-sync, or state explicitly that they were inspected and needed no changes.
+- Keep path-specific claims narrow instead of implying every command or surface behaves the same way.
+- Mirror this evidence into a release QA inventory file so the steady-state docs review is auditable after the release is finished.
+
 ## Validation
 
 - List the checks you actually ran.

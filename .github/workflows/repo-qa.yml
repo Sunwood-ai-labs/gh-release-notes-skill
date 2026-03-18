@@ -16,3 +16,11 @@ jobs:
       - name: Verify repository surfaces
         shell: pwsh
         run: ./scripts/verify-repo-surfaces.ps1
+
+      - name: Verify release QA inventory template
+        shell: pwsh
+        run: ./scripts/verify-release-qa-inventory.ps1 -Path ./references/release-qa-inventory-template.md
+
+      - name: Verify release QA inventory fixture repo gate
+        shell: pwsh
+        run: ./scripts/verify-release-qa-inventory.ps1 -RepoPath ./fixtures/release-gate-fixture -Tag v9.9.9

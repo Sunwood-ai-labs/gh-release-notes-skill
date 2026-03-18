@@ -29,6 +29,8 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 - 既存の version 付き release header SVG がある repo では、それを流用して新しいヘッダー画像も作る
 - `gh release create` / `gh release edit` と公開確認までつなげる
 - docs サイトがある repo では、release notes を docs にも反映する
+- release collateral だけで終わらせず、README や常設の運用 docs まで code-backed に整合確認させる
+- release ごとの QA inventory 証跡を残して validator で閉じる
 - 日英 README と軽量 QA を備えた共有しやすい skill repo として保つ
 
 ## クイックスタート
@@ -60,7 +62,7 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
    git show HEAD~1..HEAD
    ```
 
-5. 集めた根拠から、必要な成果物を作ります。
+5. 集めた根拠から、必要な成果物を作ります。主張はコードが担保する command / service / surface に限定して書きます。
 
    ```text
    Use $gh-release-notes to inspect the real diff for this tag and draft either the GitHub release body or docs-backed article pages.
@@ -77,7 +79,15 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 
 8. `assets/release-header-v0.2.0.svg` のような version 付き release header SVG が repo にある場合は、それを元に対象 version 用のヘッダー画像を作り、GitHub release body と関連する docs ページの先頭に載せます。
 
-9. docs を持つ repo では、release body から参照する docs URL が live になっていることも確認します。
+9. docs を持つ repo では、release body から参照する docs URL が live になっていることに加えて、`README` と主要な運用 docs を truth-sync してから release を仕上げます。
+
+10. target repo に標準パス `tmp/release-qa-v0.1.0.md` で QA inventory ファイルを [references/release-qa-inventory-template.md](./references/release-qa-inventory-template.md) から作り、close 前の必須 gate として validator を実行します。
+
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File D:\Prj\gh-release-notes-skill\scripts\verify-release-qa-inventory.ps1 -RepoPath . -Tag v0.1.0
+   ```
+
+11. 最後に Codex から skill を呼び出します。
 
 ## 同梱ファイル
 
@@ -86,8 +96,10 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 | [`SKILL.md`](./SKILL.md) | Codex 向けの中核 skill 定義 |
 | [`agents/openai.yaml`](./agents/openai.yaml) | skill discovery 用 metadata |
 | [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) | tag、比較範囲、変更ファイル、diff stat、commit 履歴を収集 |
+| [`scripts/verify-release-qa-inventory.ps1`](./scripts/verify-release-qa-inventory.ps1) | release ごとの QA inventory 証跡を閉じる前に検証する validator |
 | [`references/release-note-checklist.md`](./references/release-note-checklist.md) | 大きい release を見直すための checklist |
 | [`references/release-note-outline.md`](./references/release-note-outline.md) | release notes の構成用 outline |
+| [`references/release-qa-inventory-template.md`](./references/release-qa-inventory-template.md) | claim matrix と truth-sync 証跡を残す runtime QA template |
 | [`references/release-note-template.md`](./references/release-note-template.md) | release body のたたき台 template |
 | [`CONTRIBUTING.ja.md`](./CONTRIBUTING.ja.md) | 保守と QA の手順 |
 
@@ -98,9 +110,12 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 3. `scripts/collect-release-context.ps1` で比較範囲を決める
 4. 重要ファイルや user-facing change を実 diff で読む
 5. 根拠に基づいて GitHub release body または docs 記事ページを draft する
-6. docs surface がある repo では docs 反映と release header SVG の再利用も既定路線として扱う
-7. 必要なら `gh release create` または `gh release edit` で publish する
-8. 公開 body や docs URL、header image URL を確認する
+6. routing / retry / model selection / defaults / env var / telemetry surface など implementation-sensitive な主張は、実装コードか test で裏を取る
+7. docs surface がある repo では docs 反映と release header SVG の再利用も既定路線として扱う
+8. release notes / 解説記事を release collateral として作ったうえで、`README` と主要運用 docs にも同じ変更が必要か truth-sync を行う
+9. target repo に `tmp/release-qa-<tag>.md` で release QA inventory 証跡を materialize し、[`scripts/verify-release-qa-inventory.ps1`](./scripts/verify-release-qa-inventory.ps1) に repo path と tag を渡して検証する
+10. 必要なら `gh release create` または `gh release edit` で publish する
+11. 公開 body や docs URL、header image URL に加えて、truth-sync した常設 docs と検証済み QA inventory も最終確認する
 
 ## ローカル QA
 
