@@ -1,6 +1,6 @@
 ---
 name: gh-release-notes
-description: Draft and publish GitHub release notes from actual git diffs and tags using gh, or turn the same release evidence into docs-backed article pages. Use when Codex needs to create, revise, or verify release notes for a GitHub release, especially when the notes must be based on real code changes, commit ranges, touched files, validation results, or a first release with no previous tag. Also use it when the user wants release articles written from GitHub release material or repository changes. When the target repository already has a docs surface, create the article in docs by default and mirror release notes into docs too unless the user explicitly asks not to.
+description: Draft and publish GitHub release notes from actual git diffs and tags using gh, or turn the same release evidence into docs-backed article pages. Use when Codex needs to create, revise, or verify release notes for a GitHub release, especially when the notes must be based on real code changes, commit ranges, touched files, validation results, or a first release with no previous tag. Also use it when the user wants release articles written from GitHub release material or repository changes. When the target repository already has a docs surface, treat docs-backed release notes as mandatory and create a companion walkthrough article in docs by default for release publishing unless the user explicitly narrows the scope.
 ---
 
 # GitHub Release Notes
@@ -16,6 +16,7 @@ Use this skill to:
 - create or update GitHub releases with `gh release create` or `gh release edit`
 - handle first releases where there is no previous tag
 - draft docs-backed article pages from the same release evidence when the user wants a blog or announcement post
+- create a companion walkthrough article by default when publishing a release from a repository that already has a docs surface
 - derive a new versioned release header SVG when the repository already has an earlier release header asset
 - mirror release notes into repository docs by default when the target repository already publishes docs
 - keep release notes grounded in actual shipped behavior
@@ -52,9 +53,11 @@ Use this skill to:
    - Mention validation only if you actually ran it.
    - Use [references/release-note-template.md](./references/release-note-template.md) when you want a release-note scaffold.
    - If the user wants GitHub release notes, draft a publishable release body.
+   - If the repository has a docs surface and the user is publishing a release, create both docs-backed release notes and a companion walkthrough article by default unless the user explicitly asks for release-notes-only.
    - If the user wants article output, draft docs-backed article pages instead of a detached local draft whenever the repository has a docs surface.
-   - Do not stop at "I will draft the article next" when the user already asked for article output. Create the article pages in the same task unless the user explicitly paused the work.
-6. If you are drafting article output, inspect the repository docs surface and place the article in docs by default.
+   - Do not stop at "I will draft the article next" when article output is in scope. Create the article pages in the same task unless the user explicitly paused the work.
+   - Do not treat the release-note page as a substitute for the companion walkthrough article when the repository already publishes docs and the release is being published.
+6. If you are drafting article output, or if you are publishing a release in a repository with a docs surface, inspect the repository docs surface and place the article in docs by default.
    - When the repository already has bilingual English and Japanese docs, create both `docs/guide/articles/<slug>.md` and `docs/ja/guide/articles/<slug>.md`.
    - When the repository has only one docs locale, use the matching existing docs structure.
    - Keep the body free of Zenn or Qiita frontmatter.
@@ -69,18 +72,22 @@ Use this skill to:
    - When the seed asset is outside the published docs asset surface, also create or mirror a published copy so docs pages and GitHub releases can reference it.
    - Place the header image near the top of the GitHub release body, the docs release page, and any docs article page created for the same release.
    - In the GitHub release body, use a published URL such as the docs site URL or a raw GitHub asset URL rather than a local relative path.
-8. Inspect the repository docs surface before publishing and treat docs-backed release notes and docs-backed articles as the default path.
+8. Inspect the repository docs surface before publishing and treat docs-backed release notes plus a companion docs-backed walkthrough article as the default path.
    - Reuse the existing docs framework, locale structure, and navigation style instead of inventing a parallel format.
    - Create or update the matching docs page in every language already supported by the repository, unless the user narrowed the request.
-   - If the GitHub release body should link into docs, publish the docs changes first so the final release body can point at live URLs.
+   - If the GitHub release body should link into docs, commit and push the docs changes first, wait for docs deployment, and only then publish or edit the final GitHub release body so it can point at live URLs.
    - Prefer badge-style links at the top of the GitHub release body so readers can jump to the docs pages.
-   - Skip the docs mirror only when the repository clearly has no docs publishing surface or the user explicitly asks you not to add docs pages.
+   - Prefer linking both the docs-backed release notes page and the companion walkthrough article from the GitHub release body when both exist.
+   - Skip the companion article only when the repository clearly has no docs publishing surface or the user explicitly asks for release-notes-only.
 9. Publish or update the release with `gh` when GitHub publication is part of the task.
+   - Ensure every docs page and asset referenced by the release body is already committed before creating the release tag.
+   - Create and push the release tag only after the release docs and article pages are committed if those artifacts are part of the shipped release collateral.
    - Use `gh release create <tag> --title ... --notes-file ...` when the release does not exist.
    - Use `gh release edit <tag> --notes-file ...` when the release already exists or needs a rewrite.
 10. Verify the published body when you published or edited the GitHub release.
    - Run `gh release view <tag> --json url,title,body` and confirm the text matches what you intended.
    - If you created docs pages, verify those URLs resolve and that the release body points at the published docs routes.
+   - If you created a companion walkthrough article, verify that URL too and confirm the release body links to it when expected.
    - If you added a release header image, verify that the image URL resolves and renders from the GitHub release body and the docs pages.
 
 ## Evidence Standard
@@ -121,7 +128,7 @@ For detailed drafting rules and anti-patterns, read [references/release-note-che
 
 ## Docs Article Mode
 
-When the user wants article output instead of, or in addition to, a GitHub release body:
+When the user wants article output instead of, or in addition to, a GitHub release body, or when you are publishing a release in a repository that already has a docs surface:
 
 - write natural prose, not translated commit history
 - explain reader impact before internal implementation detail
@@ -131,6 +138,23 @@ When the user wants article output instead of, or in addition to, a GitHub relea
 - place the release header image near the top when a versioned header SVG exists or can be derived from an earlier version
 - include a final title, stable lead paragraph, main sections, and explicit links
 - treat the docs article as the canonical source that can later be handed to `oasis-skill` for Zenn and Qiita distribution
+
+## QA Inventory Gate
+
+Before calling the release task done, produce and internally check a QA inventory with criterion status for at least these items:
+
+- comparison range resolved from actual tags or an explicitly justified commitish override
+- release claims backed by inspected diffs, files, or commits
+- docs-backed release notes created or explicitly skipped with user-approved rationale
+- companion walkthrough article created or explicitly skipped with user-approved rationale
+- docs pages and assets referenced by the release body committed before tag creation
+- docs deployment completed and live URLs verified before the final release body links to them
+- release tag created locally and pushed remotely
+- GitHub release published or updated and the final body verified with `gh release view`
+- validation commands actually run, or clearly marked as not run
+- hardcoded publish dates sourced from the actual tag or release timing, or omitted until the release exists
+
+Do not mark the work complete while any required item is `fail` or `blocked`.
 
 ## Windows Notes File Handling
 
@@ -154,7 +178,10 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 - If there is no previous tag, verify that the drafted scope really covers the full shipped history.
 - If the release already existed, confirm the final published body matches the rewritten note.
 - If you created docs-backed release notes, confirm the docs build or deployment path succeeded before you call the work done.
+- If the repository has a docs surface and you published a release, verify the live docs-backed release-note URL and the live companion walkthrough-article URL unless the user explicitly opted out of the article.
+- If the release body links to docs, confirm those docs pages were committed, pushed, and deployed before the final release body was published.
 - If you created a release header image, report where the SVG was saved and where it is referenced.
+- Do not hardcode a `Published on ...` date before the release exists. After publishing, align the date with the actual release or tag timing, or state the exact source of the date.
 - If you drafted only docs article pages and did not publish a GitHub release, say that clearly and report the saved docs paths.
 
 ## Publishing With gh
