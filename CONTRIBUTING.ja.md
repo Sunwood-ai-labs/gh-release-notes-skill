@@ -10,7 +10,7 @@
 | --- | --- |
 | `SKILL.md` | Codex が直接読む中核 skill 定義 |
 | `agents/openai.yaml` | skill 一覧向けメタデータ |
-| `scripts/` | release-note 作業とリポジトリ QA の PowerShell helper |
+| `scripts/` | release-note 作業、SVG 検証、リポジトリ QA の PowerShell helper |
 | `references/` | 人間向けのドラフト指針とチェックリスト |
 | `assets/` | README で共通利用するブランド資産 |
 
@@ -35,12 +35,14 @@ powershell -ExecutionPolicy Bypass -File ./scripts/verify-repo-surfaces.ps1
 - README の言語切り替え
 - README の asset 参照
 - 同梱 PowerShell スクリプトの構文
+- リポジトリ自身の SVG asset の妥当性
 
 ## 編集ガイド
 
 - 同じ説明を複数ファイルへ重複記載するより、既存の script や reference を拡張してください。
 - 例示コマンドは Windows でそのまま使える `git` / `gh` を優先してください。
 - `gh release create` / `gh release edit` 用の notes ファイルを書く例は、`SKILL.md` のエンコーディング説明と整合させてください。
+- SVG に関する説明は `scripts/verify-svg-assets.ps1` と整合させ、再利用前に必ず検証する前提を崩さないでください。
 - README と contributing ドキュメントは英日で構造を揃えてください。
 
 ## コミットスタイル

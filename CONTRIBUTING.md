@@ -10,7 +10,7 @@ This repository packages one Codex skill, one release-context collector, and a s
 | --- | --- |
 | `SKILL.md` | Core skill instructions that Codex reads directly |
 | `agents/openai.yaml` | Discovery metadata for the skill |
-| `scripts/` | PowerShell helpers for release-note workflows and repository QA |
+| `scripts/` | PowerShell helpers for release-note workflows, SVG validation, and repository QA |
 | `references/` | Human-readable drafting guidance and checklists |
 | `assets/` | Shared README branding assets |
 
@@ -35,12 +35,14 @@ The script checks:
 - README language switches
 - README asset references
 - PowerShell syntax for the bundled scripts
+- validity of the repository's own SVG assets
 
 ## Editing Guidelines
 
 - Prefer extending bundled scripts and references over duplicating the same guidance in multiple files.
 - Keep examples grounded in actual `git` and `gh` commands that are valid on Windows.
 - When examples write a notes file for `gh release create` or `gh release edit`, keep the encoding guidance aligned with `SKILL.md`.
+- Keep SVG-related guidance aligned with `scripts/verify-svg-assets.ps1` so the skill always validates candidate assets before reuse.
 - Keep README and contributing docs structurally parallel across English and Japanese.
 
 ## Commit Style

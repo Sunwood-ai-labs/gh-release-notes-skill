@@ -15,6 +15,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Check whether the repository already has a versioned release header SVG that should be updated for this release.
 - If it does not, check whether the repository already ships reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or a branded `assets/social-card.svg` that should seed a new `release-header-v*.svg`.
 - Confirm the release would actually benefit from a hero image and that the available SVG branding is suitable for reuse before treating header generation as the default path.
+- Plan to run `scripts/verify-svg-assets.ps1` on every candidate SVG before you reuse it and on the generated header SVG before you publish it.
 
 ## 2. Collect evidence
 
@@ -25,6 +26,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Prioritize scripts, workflows, fixtures, public docs, and visible assets.
 - Inspect any existing `release-header-v*.svg` assets so you can reuse the established visual language when needed.
 - If no versioned header exists yet, inspect reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or branded `assets/social-card.svg` so you can derive a new `release-header-v*.svg` by default when the branding is suitable for a release hero image.
+- Run `scripts/verify-svg-assets.ps1` against any candidate SVGs and treat validator failures as a hard stop for reuse.
 - Keep a short evidence list so each release-note claim can be tied back to a file or diff.
 - Inspect the docs framework, locale structure, and deployment path before drafting links whenever the repository already has a docs surface.
 - For implementation-sensitive claims such as routing, retry/backoff, model selection, defaults, environment variables, telemetry, or output surfaces, inspect the implementing code paths and relevant tests, not just the top-level diff.
@@ -68,6 +70,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Verify with `gh release view <tag> --json url,title,body`.
 - If you added docs pages, publish those changes first and confirm the docs URLs resolve before finalizing badge links in the GitHub release body.
 - If you added a release header image, confirm the image URL resolves from the GitHub release body and that the docs pages render it.
+- If you used or generated SVG release-header assets, record the `verify-svg-assets.ps1` command and confirm the validator passed before finalizing the release.
 - If the release introduced operator-facing claims, report which steady-state docs were checked, updated, or explicitly left unchanged with rationale.
 - Report the QA inventory artifact path and the validator result alongside the usual release verification output.
 
@@ -82,6 +85,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Pointing GitHub release badges at docs URLs that are not live yet
 - Forgetting to carry forward an existing versioned release header asset pattern when the repository already uses one
 - Forgetting to derive a first `release-header-v*.svg` from reusable SVG branding when the repository already ships suitable icon or logo art
+- Reusing or publishing an SVG asset without first running `scripts/verify-svg-assets.ps1`
 - Forcing a hero image from SVG branding that is too sparse, broken, or clearly wrong for release collateral
 - Treating a companion walkthrough article as sufficient while README or primary operator docs are still stale
 - Broadening a path-specific implementation detail into a repo-wide claim without code evidence

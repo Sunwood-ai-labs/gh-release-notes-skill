@@ -18,10 +18,11 @@ Use this outline after reading the actual diff. Replace the placeholders with re
 
 - If the repository already has a versioned release header SVG such as `assets/release-header-v0.2.0.svg`, derive a new one for the target release instead of starting from scratch.
 - If there is no versioned release header yet but the repository already ships reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or a branded `assets/social-card.svg`, derive a new `release-header-v*.svg` from that branding by default when the release would benefit from a hero image and the branding is suitable for reuse.
+- Validate every candidate source SVG and the final generated header with `scripts/verify-svg-assets.ps1` before you reuse or publish them.
 - Keep the established visual family, but update the version text and any release-specific emphasis.
 - Make sure the final image is available from a published URL for the GitHub release body and from a docs-relative path for docs pages.
 - Place the header image near the top of the GitHub release body, the docs release page, and any related docs article page.
-- If the branding is too small, too sparse, broken, or stylistically wrong for a release hero image, say explicitly why you skipped header generation instead of forcing a weak asset.
+- If the branding is too small, too sparse, invalid, broken, or stylistically wrong for a release hero image, say explicitly why you skipped header generation instead of forcing a weak asset.
 
 ## Highlights
 

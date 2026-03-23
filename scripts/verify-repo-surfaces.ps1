@@ -106,6 +106,22 @@ function Test-PowerShellSyntax {
   }
 }
 
+function Test-SvgAssetValidation {
+  param([string[]]$RelativePaths)
+
+  $validatorPath = Resolve-RepoItem "scripts/verify-svg-assets.ps1"
+  if (-not (Test-Path -LiteralPath $validatorPath)) {
+    Add-Failure("Cannot validate SVG assets because scripts/verify-svg-assets.ps1 is missing.")
+    return
+  }
+
+  try {
+    & $validatorPath -RepoPath $repoRoot -Path $RelativePaths | Out-Null
+  } catch {
+    Add-Failure("SVG asset validation failed: $($_.Exception.Message)")
+  }
+}
+
 $requiredFiles = @(
   ".github/workflows/repo-qa.yml",
   ".gitignore",
@@ -129,6 +145,7 @@ $requiredFiles = @(
   "references/release-note-template.md",
   "scripts/collect-release-context.ps1",
   "scripts/verify-release-qa-inventory.ps1",
+  "scripts/verify-svg-assets.ps1",
   "scripts/verify-repo-surfaces.ps1"
 )
 
@@ -152,6 +169,7 @@ $markdownFiles = @(
 $powerShellFiles = @(
   "scripts/collect-release-context.ps1",
   "scripts/verify-release-qa-inventory.ps1",
+  "scripts/verify-svg-assets.ps1",
   "scripts/verify-repo-surfaces.ps1"
 )
 
@@ -167,9 +185,11 @@ foreach ($file in $powerShellFiles) {
   Test-PowerShellSyntax $file
 }
 
+Test-SvgAssetValidation @("assets/logo.svg", "assets/hero.svg")
+
 Test-RequiredText "README.md" @("./README.ja.md", "./SKILL.md", "./CONTRIBUTING.md", "./LICENSE")
 Test-RequiredText "README.ja.md" @("./README.md", "./SKILL.md", "./CONTRIBUTING.ja.md", "./LICENSE")
-Test-RequiredText "SKILL.md" @("./scripts/collect-release-context.ps1", "./scripts/verify-release-qa-inventory.ps1", "./references/release-note-checklist.md", "./references/release-qa-inventory-template.md", "./references/release-note-template.md")
+Test-RequiredText "SKILL.md" @("./scripts/collect-release-context.ps1", "./scripts/verify-release-qa-inventory.ps1", "./scripts/verify-svg-assets.ps1", "./references/release-note-checklist.md", "./references/release-qa-inventory-template.md", "./references/release-note-template.md")
 Test-RequiredText "agents/openai.yaml" @("GitHub Release Notes", "gh-release-notes")
 Test-RequiredText ".github/workflows/repo-qa.yml" @("verify-repo-surfaces.ps1", "verify-release-qa-inventory.ps1")
 

@@ -18,14 +18,14 @@ Allowed QA inventory statuses:
 - release tag: `v0.1.0`
 - compare range: `HEAD`
 - requested outputs: GitHub release body, docs-backed release notes, companion walkthrough article
-- validation commands run: `powershell -ExecutionPolicy Bypass -File ./scripts/verify-repo-surfaces.ps1`
+- validation commands run: `powershell -ExecutionPolicy Bypass -File ./scripts/verify-repo-surfaces.ps1`, `powershell -ExecutionPolicy Bypass -File ./scripts/verify-svg-assets.ps1 -RepoPath . -Path assets/logo.svg,assets/hero.svg`
 - release URLs: not published in this example template
 
 ## Claim Matrix
 
 | claim | code refs | validation refs | docs surfaces touched | scope |
 | --- | --- | --- | --- | --- |
-| Example: release tasks now require a validated QA inventory before close-out | `SKILL.md`, `agents/openai.yaml`, `scripts/verify-release-qa-inventory.ps1` | `powershell -ExecutionPolicy Bypass -File ./scripts/verify-repo-surfaces.ps1` | `README.md`, `README.ja.md` | steady_state |
+| Example: release tasks now require a validated QA inventory before close-out | `SKILL.md`, `agents/openai.yaml`, `scripts/verify-release-qa-inventory.ps1` | `powershell -ExecutionPolicy Bypass -File ./scripts/verify-repo-surfaces.ps1`, `powershell -ExecutionPolicy Bypass -File ./scripts/verify-svg-assets.ps1 -RepoPath . -Path assets/logo.svg,assets/hero.svg` | `README.md`, `README.ja.md` | steady_state |
 
 ## Steady-State Docs Review
 
@@ -48,6 +48,7 @@ Allowed QA inventory statuses:
 | steady_state_docs_reviewed | pass | README and primary operator docs reviewed in the table above |
 | claim_scope_precise | pass | Narrowed wording to the release task workflow and validator surfaces |
 | latest_release_links_updated | not_applicable | Repository has no latest-release landing pointers |
+| svg_assets_validated | pass | `powershell -ExecutionPolicy Bypass -File ./scripts/verify-svg-assets.ps1 -RepoPath . -Path assets/logo.svg,assets/hero.svg` |
 | docs_assets_committed_before_tag | not_applicable | Example template is for skill QA, not a published release run |
 | docs_deployed_live | not_applicable | Example template is not tied to deployed docs URLs |
 | tag_local_remote | user_waived | Example template is not publishing a live tag |

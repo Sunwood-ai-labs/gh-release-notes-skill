@@ -24,6 +24,7 @@ $requiredCriteria = @(
   "steady_state_docs_reviewed",
   "claim_scope_precise",
   "latest_release_links_updated",
+  "svg_assets_validated",
   "docs_assets_committed_before_tag",
   "docs_deployed_live",
   "tag_local_remote",
