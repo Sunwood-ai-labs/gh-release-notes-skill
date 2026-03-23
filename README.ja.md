@@ -27,6 +27,7 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 - 初回リリースと継続リリースの両方を同じ流れで扱う
 - 同じ release evidence から、docs 記事ページも作る
 - 既存の version 付き release header SVG がある repo では、それを流用して新しいヘッダー画像も作る
+- 既存の version 付き header がまだなくても、`assets/icon.svg`、`assets/logo.svg`、ブランド入り `assets/social-card.svg` など再利用に向く SVG があれば、release にヒーロー画像が有効なときは既定で `release-header-v*.svg` を派生作成する
 - `gh release create` / `gh release edit` と公開確認までつなげる
 - docs サイトがある repo では、release notes を docs にも反映する
 - release collateral だけで終わらせず、README や常設の運用 docs まで code-backed に整合確認させる
@@ -77,7 +78,7 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 
 7. 記事出力を作る場合は、その場で repo の docs を正本として `docs/guide/articles/<slug>.md` と `docs/ja/guide/articles/<slug>.md` のような記事ページまで作り、Zenn / Qiita 反映は別の配信用 skill に渡します。
 
-8. `assets/release-header-v0.2.0.svg` のような version 付き release header SVG が repo にある場合は、それを元に対象 version 用のヘッダー画像を作り、GitHub release body と関連する docs ページの先頭に載せます。
+8. `assets/release-header-v0.2.0.svg` のような version 付き release header SVG が repo にある場合は、それを元に対象 version 用のヘッダー画像を作り、GitHub release body と関連する docs ページの先頭に載せます。まだ version 付き header がなくても、`assets/icon.svg`、`assets/logo.svg`、ブランド入り `assets/social-card.svg` のような SVG 資産があり、release にヒーロー画像が有効で再利用にも向いているなら、既定で新しい `release-header-v*.svg` をそこから派生作成します。向いていない場合はスキップ理由を残します。
 
 9. docs を持つ repo では、release body から参照する docs URL が live になっていることに加えて、`README` と主要な運用 docs を truth-sync してから release を仕上げます。
 
@@ -111,7 +112,7 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 4. 重要ファイルや user-facing change を実 diff で読む
 5. 根拠に基づいて GitHub release body または docs 記事ページを draft する
 6. routing / retry / model selection / defaults / env var / telemetry surface など implementation-sensitive な主張は、実装コードか test で裏を取る
-7. docs surface がある repo では docs 反映と release header SVG の再利用も既定路線として扱う
+7. docs surface がある repo では docs 反映と release header SVG の再利用を既定路線として扱い、version 付き header がまだない場合でも適切な SVG ブランド資産があれば初回 `release-header-v*.svg` の派生作成を検討する
 8. release notes / 解説記事を release collateral として作ったうえで、`README` と主要運用 docs にも同じ変更が必要か truth-sync を行う
 9. target repo に `tmp/release-qa-<tag>.md` で release QA inventory 証跡を materialize し、[`scripts/verify-release-qa-inventory.ps1`](./scripts/verify-release-qa-inventory.ps1) に repo path と tag を渡して検証する
 10. 必要なら `gh release create` または `gh release edit` で publish する
@@ -133,6 +134,7 @@ powershell -ExecutionPolicy Bypass -File ./scripts/verify-repo-surfaces.ps1
 - 一時的な notes file を Windows で作る場合は、`gh release create` / `gh release edit` の前に UTF-8 without BOM で保存してください。
 - 記事ページは docs を正本にし、必要ならそこから Zenn / Qiita へ展開するのが自然です。
 - version 付き release header SVG が repo にある場合は、同じデザイン系列で新 version を作り、release body と docs release/article の両方で再利用するのが自然です。
+- まだ version 付き header がなくても、既存の SVG ブランド資産が release ヒーロー画像として十分に使えるなら、そこから最初の `release-header-v*.svg` を派生させるのが既定です。
 
 ## ライセンス
 

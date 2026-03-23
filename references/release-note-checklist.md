@@ -13,6 +13,8 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Decide the note language and whether publication is expected in the current task.
 - Assume the release note should also live in the repository docs when a docs surface exists, and identify which languages the docs already support.
 - Check whether the repository already has a versioned release header SVG that should be updated for this release.
+- If it does not, check whether the repository already ships reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or a branded `assets/social-card.svg` that should seed a new `release-header-v*.svg`.
+- Confirm the release would actually benefit from a hero image and that the available SVG branding is suitable for reuse before treating header generation as the default path.
 
 ## 2. Collect evidence
 
@@ -22,6 +24,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Inspect the actual patches for major commits and changed files with `git show`.
 - Prioritize scripts, workflows, fixtures, public docs, and visible assets.
 - Inspect any existing `release-header-v*.svg` assets so you can reuse the established visual language when needed.
+- If no versioned header exists yet, inspect reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or branded `assets/social-card.svg` so you can derive a new `release-header-v*.svg` by default when the branding is suitable for a release hero image.
 - Keep a short evidence list so each release-note claim can be tied back to a file or diff.
 - Inspect the docs framework, locale structure, and deployment path before drafting links whenever the repository already has a docs surface.
 - For implementation-sensitive claims such as routing, retry/backoff, model selection, defaults, environment variables, telemetry, or output surfaces, inspect the implementing code paths and relevant tests, not just the top-level diff.
@@ -33,6 +36,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Name concrete behavior such as supported flags, new detection rules, validation steps, or install flows.
 - Mention docs and visual assets after core functionality unless the release is docs-only.
 - If the repository already ships release header art, carry that forward into the new release instead of silently dropping the visual header.
+- If the repository does not yet ship versioned release header art but does have reusable SVG branding, derive and include a new `release-header-v*.svg` by default instead of omitting the header, unless the branding is unsuitable or the user narrowed scope away from visual collateral.
 - If a script or workflow materially protects quality, explain what it checks.
 - If you cannot explain why a change matters to a release reader, inspect the patch again before drafting.
 - Keep each claim scoped to the exact command, service, embed, deployment mode, or operator surface the implementation supports.
@@ -77,5 +81,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Publishing a note without checking the final rendered body
 - Pointing GitHub release badges at docs URLs that are not live yet
 - Forgetting to carry forward an existing versioned release header asset pattern when the repository already uses one
+- Forgetting to derive a first `release-header-v*.svg` from reusable SVG branding when the repository already ships suitable icon or logo art
+- Forcing a hero image from SVG branding that is too sparse, broken, or clearly wrong for release collateral
 - Treating a companion walkthrough article as sufficient while README or primary operator docs are still stale
 - Broadening a path-specific implementation detail into a repo-wide claim without code evidence

@@ -18,6 +18,7 @@ Use this skill to:
 - draft docs-backed article pages from the same release evidence when the user wants a blog or announcement post
 - create a companion walkthrough article by default when publishing a release from a repository that already has a docs surface
 - derive a new versioned release header SVG when the repository already has an earlier release header asset
+- derive a new versioned release header SVG by default when the repository already ships suitable reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or a branded `assets/social-card.svg`, the release would benefit from a hero image, and there is no earlier versioned release header asset yet
 - mirror release notes into repository docs by default when the target repository already publishes docs
 - keep release collateral, README, and primary operator docs aligned with code-backed shipped behavior
 - require a release QA inventory artifact and validate it before closing the task
@@ -48,6 +49,7 @@ Use this skill to:
    - Read the changed file list and diff stats first.
    - Always inspect new or heavily changed scripts, workflows, fixtures, docs, and user-facing assets.
    - Search for existing release header assets such as `assets/release-header-v0.2.0.svg`, `docs/public/.../release-header-v0.2.0.svg`, or similar versioned SVGs before deciding whether to create a new header image.
+   - If there is no versioned release header asset yet, search for reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, `assets/social-card.svg`, or equivalent repo branding and treat that as the default seed for a new `release-header-v*.svg` only when the branding is suitable for a release hero image.
    - Use `git show` on major commits and touched files until you can name concrete capabilities added.
    - For implementation-sensitive claims such as model selection, retry/backoff, routing, defaults, environment variables, telemetry surfaces, or command behavior, inspect the actual code paths and tests that implement them.
    - When those claims depend on configuration or runtime wiring, read the config readers, command entrypoints, runtime call sites, and operator-visible output formatting instead of relying on one file in isolation.
@@ -77,6 +79,9 @@ Use this skill to:
    - When the seed asset is outside the published docs asset surface, also create or mirror a published copy so docs pages and GitHub releases can reference it.
    - Place the header image near the top of the GitHub release body, the docs release page, and any docs article page created for the same release.
    - In the GitHub release body, use a published URL such as the docs site URL or a raw GitHub asset URL rather than a local relative path.
+   - If the repository does not already have versioned release header art but does have reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or a branded `assets/social-card.svg`, treat header generation as the default behavior only when the release would benefit from a hero image, the SVG is suitable for reuse, and the user did not narrow scope away from visual collateral.
+   - Derive the new `release-header-v*.svg` from that existing SVG branding so the release inherits the repo's established visual language rather than shipping without a hero image.
+   - If the available SVG is icon-only, too low-detail, stylistically mismatched, broken, or otherwise unsuitable for a release hero image, explicitly skip header generation or mark it as review-required instead of forcing a weak result.
 8. Inspect the repository docs surface before publishing and treat docs-backed release notes plus a companion docs-backed walkthrough article as the default path.
    - Reuse the existing docs framework, locale structure, and navigation style instead of inventing a parallel format.
    - Create or update the matching docs page in every language already supported by the repository, unless the user narrowed the request.
@@ -127,6 +132,7 @@ Inspect these categories whenever they appear in the diff:
 - fixtures, test data, or regression helpers
 - README, `SKILL.md`, docs, references, or public assets
 - versioned release header assets such as `release-header-v*.svg`
+- reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or branded `assets/social-card.svg` when no versioned release header exists yet
 - packaging or version metadata such as `package.json`, `pyproject.toml`, or release config
 
 For detailed drafting rules and anti-patterns, read [references/release-note-checklist.md](./references/release-note-checklist.md).
@@ -144,6 +150,7 @@ For detailed drafting rules and anti-patterns, read [references/release-note-che
 - If a release claim affects operator understanding outside release week, sync the matching steady-state docs instead of leaving the claim only in release collateral.
 - Narrow the wording when a feature applies only to one path, such as `drive watch`, upload-test, long-running services, or a specific embed surface.
 - When a versioned release header SVG already exists in the repository, create and include the updated header instead of leaving the release without a hero image.
+- When there is no versioned release header yet but the repository already ships suitable reusable SVG branding, derive and include a new `release-header-v*.svg` by default instead of omitting the hero image, unless the user narrowed scope or the branding is not suitable for a release hero image.
 - Keep the final note dense with evidence but still readable.
 
 ## Docs Article Mode
@@ -155,7 +162,7 @@ When the user wants article output instead of, or in addition to, a GitHub relea
 - create docs article pages in the repository instead of saving a detached draft elsewhere
 - finish the docs article pages in the same turn instead of leaving a follow-up promise
 - when the docs site already supports both English and Japanese, write both locale pages
-- place the release header image near the top when a versioned header SVG exists or can be derived from an earlier version
+- place the release header image near the top when a versioned header SVG exists or when a suitable new one can be derived from existing SVG branding such as an icon or logo
 - include a final title, stable lead paragraph, main sections, and explicit links
 - treat the docs article as the canonical source that can later be handed to `oasis-skill` for Zenn and Qiita distribution
 
@@ -223,7 +230,8 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 - If the repository has a docs surface and you published a release, verify the live docs-backed release-note URL and the live companion walkthrough-article URL unless the user explicitly opted out of the article.
 - If the release introduced or emphasized operator-facing claims, report whether `README` and primary operator docs were reviewed for truth-sync and list the files you updated or explicitly found unchanged.
 - If the release body links to docs, confirm those docs pages were committed, pushed, and deployed before the final release body was published.
-- If you created a release header image, report where the SVG was saved and where it is referenced.
+- If you created a release header image, report where the SVG was saved, which existing SVG branding it was derived from when applicable, and where it is referenced.
+- If you skipped header generation despite existing SVG branding, report why the branding was unsuitable or why the scope excluded visual collateral.
 - Do not hardcode a `Published on ...` date before the release exists. After publishing, align the date with the actual release or tag timing, or state the exact source of the date.
 - Confirm the QA inventory artifact path, the validator command you ran, and whether the validator passed.
 - If you drafted only docs article pages and did not publish a GitHub release, say that clearly and report the saved docs paths.

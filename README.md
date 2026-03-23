@@ -27,6 +27,7 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 - Handle both first releases and incremental tagged releases with the same workflow.
 - Reuse the same release evidence to draft docs article pages when the user wants a blog or announcement post.
 - Reuse an existing versioned release header SVG when the target repository already has one.
+- Derive a versioned release header SVG by default from existing repo branding such as `assets/icon.svg`, `assets/logo.svg`, or a branded `assets/social-card.svg` when no earlier release-header asset exists yet, the release would benefit from a hero image, and the branding is suitable for reuse.
 - Keep publication grounded in `gh release create`, `gh release edit`, and post-publish verification.
 - Mirror release notes into repository docs by default when the target repository already publishes a docs site.
 - Force a code-backed truth-sync pass so README and primary operator docs do not drift behind release collateral.
@@ -77,7 +78,7 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 
 7. If the user asked for article output instead of only release notes, create the article pages in the repository docs during the same task, for example `docs/guide/articles/<slug>.md` and `docs/ja/guide/articles/<slug>.md` when the docs site already supports both locales.
 
-8. If the target repository already has a versioned header SVG such as `assets/release-header-v0.2.0.svg`, derive a new header for the target version, publish it where docs can serve it, and place it near the top of the GitHub release body plus the related docs pages.
+8. If the target repository already has a versioned header SVG such as `assets/release-header-v0.2.0.svg`, derive a new header for the target version, publish it where docs can serve it, and place it near the top of the GitHub release body plus the related docs pages. If there is no versioned header yet but the repository already ships reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or a branded `assets/social-card.svg`, derive a new `release-header-v*.svg` from that branding by default when the release would benefit from a hero image and the branding is suitable for reuse; otherwise document why you skipped it.
 
 9. If the target repository already publishes docs, update those docs pages first, run a truth-sync pass across `README` and the primary operator guides, and then edit the GitHub release so badge links point at live docs URLs.
 
@@ -116,10 +117,11 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 5. Draft notes around behavior and release scope, not raw filenames.
 6. Inspect the code paths or tests behind implementation-sensitive claims such as routing, retry/backoff, model selection, defaults, environment variables, telemetry surfaces, and path-specific outputs.
 7. Reuse the repository's docs framework, locale structure, and any existing release header SVG pattern when a docs surface already exists.
-8. Treat release notes and walkthrough articles as release collateral, then review `README` plus the primary operator guides to decide which steady-state docs also need updates.
-9. Materialize the release QA inventory at `tmp/release-qa-<tag>.md` in the target repository and validate it with [`scripts/verify-release-qa-inventory.ps1`](./scripts/verify-release-qa-inventory.ps1) by passing the repo path and tag.
-10. Publish with `gh release create` or `gh release edit`.
-11. Verify the published body with `gh release view <tag> --json url,body`, and verify docs URLs, header-image URLs, truth-synced operator docs, and the validated QA inventory artifact too.
+8. If no versioned release header exists yet but the repository already ships reusable SVG branding, default to deriving and shipping a new `release-header-v*.svg` when the release would benefit from a hero image and the branding is suitable for reuse; otherwise record an explicit skip or review-required decision.
+9. Treat release notes and walkthrough articles as release collateral, then review `README` plus the primary operator guides to decide which steady-state docs also need updates.
+10. Materialize the release QA inventory at `tmp/release-qa-<tag>.md` in the target repository and validate it with [`scripts/verify-release-qa-inventory.ps1`](./scripts/verify-release-qa-inventory.ps1) by passing the repo path and tag.
+11. Publish with `gh release create` or `gh release edit`.
+12. Verify the published body with `gh release view <tag> --json url,body`, and verify docs URLs, header-image URLs, truth-synced operator docs, and the validated QA inventory artifact too.
 
 ## Local QA
 
