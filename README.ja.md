@@ -121,6 +121,26 @@ GitHub Release Notes Skill は、リポジトリの差分根拠をそのまま G
 11. 必要なら `gh release create` または `gh release edit` で publish する
 12. 公開 body や docs URL、header image URL、SVG validator の結果に加えて、truth-sync した常設 docs と検証済み QA inventory も最終確認する
 
+## セットアップと応用例
+
+実例として扱いやすいのが [Sunwood-ai-labs/bitnet-android-lab](https://github.com/Sunwood-ai-labs/bitnet-android-lab) です。この repo の公開 README では、2026年3月23日に動いた狭い Android Termux 経路と、2026年3月25日の追跡確認が明示されていて、広い互換性主張を避けています。だからこそ `$gh-release-notes` の教材として相性がよく、「release 文面を狭く保つ」「docs と evidence を正本として扱う」「caveat を消さない」をまとめて見せられます。
+
+この repo を使ったセットアップ兼応用パターンは次のようになります。
+
+1. まず root README と、そこから案内されている `docs/guide/setup-termux.md` を読む
+2. プロジェクト自身が根拠面として示している `docs/`, `evidence/`, `patches/`, `scripts/termux/`, `scripts/windows/` を確認する
+3. 対象 clone 上で [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) を実行して、比較範囲を先に確定する
+4. すでに docs を公開している repo なので、docs-backed release notes と companion walkthrough article を既定成果物として扱う
+5. patched local build、checkpoint 状態、rerun coverage の限界など、repo 自身の caveat を残したまま、検証済み経路にだけ主張を絞る
+6. 将来この repo に SVG header asset やブランド SVG seed が入ったら、[`scripts/verify-svg-assets.ps1`](./scripts/verify-svg-assets.ps1) で検証してから release collateral に再利用する
+7. docs review、evidence review、validation command を `tmp/release-qa-<tag>.md` に残し、close 前に validator を通す
+
+応用 prompt 例:
+
+```text
+Use $gh-release-notes for Sunwood-ai-labs/bitnet-android-lab. Treat docs-backed release notes and a companion walkthrough article as the default outcome. Inspect README.md, docs/guide/setup-termux.md, docs/results/, docs/reference/, evidence/manifest.md, patches/qvac-fabric-llm.cpp/, scripts/termux/, and scripts/windows/. Keep every claim scoped to the verified Android Termux path documented in the repo and preserve the repo's caveats instead of generalizing to broad Android compatibility.
+```
+
 ## ローカル QA
 
 この repo 自体を変更したら、次の検証を回します。

@@ -126,6 +126,26 @@ GitHub Release Notes Skill helps Codex turn repository evidence into publishable
 12. Publish with `gh release create` or `gh release edit`.
 13. Verify the published body with `gh release view <tag> --json url,body`, and verify docs URLs, header-image URLs, SVG validator results, truth-synced operator docs, and the validated QA inventory artifact too.
 
+## Setup And Applied Example
+
+One good real-repo example is [Sunwood-ai-labs/bitnet-android-lab](https://github.com/Sunwood-ai-labs/bitnet-android-lab). Its public README describes a narrow Android Termux lab path that worked on March 23, 2026, with follow-up spot checks from March 25, 2026, and it explicitly avoids broad compatibility claims. That makes it a strong example for `$gh-release-notes` because the skill has to keep release wording narrow, evidence-backed, and aligned with docs plus caveats.
+
+Use that repo as a setup-and-application pattern like this:
+
+1. Read the root README and the published docs-linked setup guide such as `docs/guide/setup-termux.md`.
+2. Inspect the repo map and evidence surfaces called out by the project itself: `docs/`, `evidence/`, `patches/`, `scripts/termux/`, and `scripts/windows/`.
+3. Run [`scripts/collect-release-context.ps1`](./scripts/collect-release-context.ps1) in the target clone to resolve the actual compare range before drafting.
+4. Treat docs-backed release notes and a companion walkthrough article as the default outcome because the repo already publishes docs.
+5. Keep claims scoped to the verified path only, including the repo's own caveats about patched local builds, checkpoint status, and limited rerun coverage.
+6. If the repo later adds SVG header assets or branded SVG seeds, validate them with [`scripts/verify-svg-assets.ps1`](./scripts/verify-svg-assets.ps1) before reusing them in release collateral.
+7. Record the docs review, evidence review, and any validation commands in `tmp/release-qa-<tag>.md`, then validate the artifact before closing the task.
+
+Example prompt:
+
+```text
+Use $gh-release-notes for Sunwood-ai-labs/bitnet-android-lab. Treat docs-backed release notes and a companion walkthrough article as the default outcome. Inspect README.md, docs/guide/setup-termux.md, docs/results/, docs/reference/, evidence/manifest.md, patches/qvac-fabric-llm.cpp/, scripts/termux/, and scripts/windows/. Keep every claim scoped to the verified Android Termux path documented in the repo and preserve the repo's caveats instead of generalizing to broad Android compatibility.
+```
+
 ## Local QA
 
 Run the repository verification script before publishing changes to this repo:
