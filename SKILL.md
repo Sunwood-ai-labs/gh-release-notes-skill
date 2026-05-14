@@ -94,6 +94,8 @@ Use this skill to:
    - Update stale "latest release" links, overview pointers, and docs navigation when the repository exposes them.
    - If the GitHub release body should link into docs, commit and push the docs changes first, wait for docs deployment, and only then publish or edit the final GitHub release body so it can point at live URLs.
    - Prefer badge-style links at the top of the GitHub release body so readers can jump to the docs pages.
+   - In the GitHub release body, render top docs links as shields.io badge images inside a centered HTML paragraph, not as plain Markdown links or a punctuation-separated link list.
+   - Keep the badge paragraph centered with `<p align="center">...</p>` and include one badge per important destination such as English docs, Japanese docs, walkthrough, and Japanese walkthrough when those pages exist.
    - Prefer linking both the docs-backed release notes page and the companion walkthrough article from the GitHub release body when both exist.
    - Skip the companion article only when the repository clearly has no docs publishing surface or the user explicitly asks for release-notes-only.
 9. Materialize the QA inventory as a file in the target repository before calling the work complete.
@@ -107,7 +109,9 @@ Use this skill to:
    - Use `gh release create <tag> --title ... --notes-file ...` when the release does not exist.
    - Use `gh release edit <tag> --notes-file ...` when the release already exists or needs a rewrite.
 11. Verify the published body when you published or edited the GitHub release.
-   - Run `gh release view <tag> --json url,title,body` and confirm the text matches what you intended.
+   - Run `gh release view <tag> --json url,name,body` and confirm the text matches what you intended.
+   - Confirm the GitHub release body still has centered badge links at the top when docs or walkthrough links exist.
+   - Confirm every major `##` section heading in the GitHub release body starts with an appropriate emoji, for example `## ✨ Highlights`, `## 🛡️ Reliability`, `## 📚 Docs`, `## ✅ Validation`, or `## 🧩 Follow-Up`.
    - If you created docs pages, verify those URLs resolve and that the release body points at the published docs routes.
    - If you created a companion walkthrough article, verify that URL too and confirm the release body links to it when expected.
    - If you added a release header image, verify that the image URL resolves and renders from the GitHub release body and the docs pages.
@@ -143,12 +147,14 @@ For detailed drafting rules and anti-patterns, read [references/release-note-che
 ## Drafting Rules
 
 - Prefer sections like `Highlights`, `Tooling`, `Validation`, `Docs And Assets`, or equivalent based on the diff.
+- In GitHub release bodies, prefix major `##` section headings with concise emojis that match the section purpose. Keep docs pages more conservative if the existing docs style avoids emoji, but do not publish a GitHub release body with bare `## Highlights` / `## Validation` style headings unless the user explicitly asks for plain headings.
 - Lead with the biggest shipped change, not the easiest file to summarize.
 - Mention docs and visuals after the product or tooling changes unless the release is docs-only.
 - For initial releases, say explicitly that the notes cover the full history shipped in that tag.
 - When a script adds real behavior, name the behavior, not just the filename.
 - When a workflow or fixture materially protects the release, explain what it validates.
 - Keep the GitHub release body readable on its own and use badges or short links to point at the fuller docs pages.
+- When using docs or article links in the GitHub release body, make them shields.io badges wrapped in a centered paragraph near the top; plain inline text links are a fallback only when badges cannot render.
 - Treat docs-backed release notes as the standard outcome whenever the repository already has a published docs surface.
 - If a release claim affects operator understanding outside release week, sync the matching steady-state docs instead of leaving the claim only in release collateral.
 - Narrow the wording when a feature applies only to one path, such as `drive watch`, upload-test, long-running services, or a specific embed surface.
@@ -201,6 +207,8 @@ Before calling the release task done, produce and internally check a QA inventor
 - SVG assets used as release-header inputs or outputs validated with `verify-svg-assets.ps1`, or explicitly marked `not_applicable`
 - docs pages and assets referenced by the release body committed before tag creation
 - docs deployment completed and live URLs verified before the final release body links to them
+- GitHub release top docs/article links rendered as centered badge images when such links exist, or a rationale recorded when badges were not possible
+- GitHub release major `##` section headings use purpose-matched emoji prefixes, or a user-approved rationale recorded for plain headings
 - release tag created locally and pushed remotely
 - GitHub release published or updated and the final body verified with `gh release view`
 - validation commands actually run, or clearly marked as not run
@@ -233,6 +241,8 @@ $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 - If the release already existed, confirm the final published body matches the rewritten note.
 - If you created docs-backed release notes, confirm the docs build or deployment path succeeded before you call the work done.
 - If the repository has a docs surface and you published a release, verify the live docs-backed release-note URL and the live companion walkthrough-article URL unless the user explicitly opted out of the article.
+- If the release body includes docs or article links, confirm they are badge-style and centered in the published GitHub release body.
+- Confirm the published GitHub release body uses emoji-prefixed major section headings.
 - If the release introduced or emphasized operator-facing claims, report whether `README` and primary operator docs were reviewed for truth-sync and list the files you updated or explicitly found unchanged.
 - If the release body links to docs, confirm those docs pages were committed, pushed, and deployed before the final release body was published.
 - If you created a release header image, report where the SVG was saved, which existing SVG branding it was derived from when applicable, which `verify-svg-assets.ps1` commands you ran, and where it is referenced.
@@ -249,7 +259,7 @@ Common commands:
 gh release view v0.1.0
 gh release create v0.1.0 --target main --title "v0.1.0" --notes-file $notesPath
 gh release edit v0.1.0 --notes-file $notesPath
-gh release view v0.1.0 --json url,body
+gh release view v0.1.0 --json url,name,body
 ```
 
 ## Resources

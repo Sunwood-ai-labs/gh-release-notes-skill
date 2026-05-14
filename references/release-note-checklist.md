@@ -12,6 +12,7 @@ Use this checklist when the release is large, the history is messy, or the user 
 - If no previous tag exists, treat the release as an initial release and say so in the notes.
 - Decide the note language and whether publication is expected in the current task.
 - Assume the release note should also live in the repository docs when a docs surface exists, and identify which languages the docs already support.
+- Plan the GitHub release body's presentation gate: docs/article links should be centered shields.io badges near the top, and major `##` headings should use concise purpose-matched emoji prefixes.
 - Check whether the repository already has a versioned release header SVG that should be updated for this release.
 - If it does not, check whether the repository already ships reusable SVG branding such as `assets/icon.svg`, `assets/logo.svg`, or a branded `assets/social-card.svg` that should seed a new `release-header-v*.svg`.
 - Confirm the release would actually benefit from a hero image and that the available SVG branding is suitable for reuse before treating header generation as the default path.
@@ -58,6 +59,8 @@ Use this checklist when the release is large, the history is messy, or the user 
 
 - Only mention validation that you actually ran.
 - Only mention support that is visible in the code or docs you inspected.
+- In the GitHub release body, make top docs/article links badge-style and centered with `<p align="center">...</p>` when those links exist.
+- In the GitHub release body, use emoji-prefixed major section headings such as `## ✨ Highlights`, `## 📚 Docs`, and `## ✅ Validation`.
 - If a release body was previously thin, rewrite it instead of lightly appending bullets.
 - Say explicitly when the note covers a first release or a partial branch-based target instead of a normal tag-to-tag comparison.
 - Use [release-note-template.md](./release-note-template.md) when you need a neutral outline before editing the final prose.
@@ -67,7 +70,8 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Use `gh release create` for new releases.
 - Use `gh release edit` for existing releases or rewrites.
 - Write temporary note files as UTF-8 without BOM on Windows.
-- Verify with `gh release view <tag> --json url,title,body`.
+- Verify with `gh release view <tag> --json url,name,body`.
+- During the final body check, reject plain top link lists when docs/article badges should exist, and reject bare major headings such as `## Highlights` or `## Validation` unless the user explicitly requested plain headings.
 - If you added docs pages, publish those changes first and confirm the docs URLs resolve before finalizing badge links in the GitHub release body.
 - If you added a release header image, confirm the image URL resolves from the GitHub release body and that the docs pages render it.
 - If you used or generated SVG release-header assets, record the `verify-svg-assets.ps1` command and confirm the validator passed before finalizing the release.
@@ -82,6 +86,8 @@ Use this checklist when the release is large, the history is messy, or the user 
 - Leading with README polish when substantive code or tooling changed
 - Claiming tests passed without running them
 - Publishing a note without checking the final rendered body
+- Publishing docs/article links as a plain Markdown list when the GitHub release body should use centered badge links
+- Publishing bare major section headings when the GitHub release body should use emoji-prefixed headings
 - Pointing GitHub release badges at docs URLs that are not live yet
 - Forgetting to carry forward an existing versioned release header asset pattern when the repository already uses one
 - Forgetting to derive a first `release-header-v*.svg` from reusable SVG branding when the repository already ships suitable icon or logo art

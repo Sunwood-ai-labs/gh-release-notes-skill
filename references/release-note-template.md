@@ -9,7 +9,9 @@ Use this outline after reading the actual diff. Replace the placeholders with re
 
 ## Default Docs Mirror
 
-- When the repository already has a docs surface, add links or badges near the top of the GitHub release body that point to the published docs page.
+- When the repository already has a docs surface, add badge links near the top of the GitHub release body that point to the published docs page.
+- Render GitHub release docs/article links as shields.io badge images inside `<p align="center">...</p>`, with one badge per important destination such as English docs, Japanese docs, walkthrough, and Japanese walkthrough when those pages exist.
+- Do not leave these links as a plain Markdown link list unless badge rendering is impossible and the reason is recorded.
 - Mirror the release note into the repository docs in each already-supported language unless the user explicitly narrows the scope.
 - Publish docs before the final `gh release edit` when the release body should point at live docs URLs.
 - If the repository does not have a docs publishing surface, skip this section instead of inventing a new docs system just for the release note.
@@ -24,31 +26,31 @@ Use this outline after reading the actual diff. Replace the placeholders with re
 - Place the header image near the top of the GitHub release body, the docs release page, and any related docs article page.
 - If the branding is too small, too sparse, invalid, broken, or stylistically wrong for a release hero image, say explicitly why you skipped header generation instead of forcing a weak asset.
 
-## Highlights
+## ✨ Highlights
 
 - Describe the most important shipped behavior first.
 - Prefer outcome-focused bullets over filename-only bullets.
 
-## Tooling And Automation
+## 🛠️ Tooling And Automation
 
 - Capture scripts, workflows, fixtures, or packaging changes that materially affect delivery or verification.
 
-## Docs And Assets
+## 📚 Docs And Assets
 
 - Mention README, docs, or public assets after substantive product or tooling changes unless the release is docs-only.
 
-## Steady-State Docs Sync
+## 🔎 Steady-State Docs Sync
 
 - List which permanent docs surfaces were reviewed, such as `README`, overview, CLI, setup, deployment, smoke-test, quickstart, or env docs.
 - Mention which of those files changed for truth-sync, or state explicitly that they were inspected and needed no changes.
 - Keep path-specific claims narrow instead of implying every command or surface behaves the same way.
 - Mirror this evidence into a release QA inventory file so the steady-state docs review is auditable after the release is finished.
 
-## Validation
+## ✅ Validation
 
 - List the checks you actually ran.
 - If you did not run validation, say so instead of implying it passed.
 
-## Upgrade Notes
+## 🧩 Upgrade Notes
 
 - Mention migration steps, manual follow-up, or compatibility notes only when the diff supports them.
